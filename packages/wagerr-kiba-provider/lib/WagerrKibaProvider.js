@@ -7,7 +7,7 @@ import { version } from '../package.json'
 
 const blockchain = 'wagerr'
 
-export default class WagerrKibaProvider extends KibaProvider { //TODO: for wagerr if required
+export default class WagerrKibaProvider extends KibaProvider { // TODO: for wagerr if required
   constructor (kibaProvider, network, addressType = 'bech32') {
     super(kibaProvider, network)
 
@@ -115,7 +115,7 @@ export default class WagerrKibaProvider extends KibaProvider { //TODO: for wager
     return addresses
   }
 
-  async _buildTransaction (to, value) {  
+  async _buildTransaction (to, value) {
     value = value + calculateFee(3, 3, 9) // Currently Kiba assumes txfee is 5004 satoshis
 
     const method = 'SIGN_TXN'

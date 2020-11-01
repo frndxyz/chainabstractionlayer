@@ -15,7 +15,7 @@ const BIP70_CHAIN_TO_NETWORK = {
   'regtest': WagerrNetworks.wagerr_regtest
 }
 
-export default class WagerrNodeWalletProvider extends WalletProvider { //TODO: wagerr json rpc
+export default class WagerrNodeWalletProvider extends WalletProvider { // TODO: wagerr json rpc
   constructor (network, uri, username, password, addressType = 'bech32') {
     super()
     if (!AddressTypes.includes(addressType)) {

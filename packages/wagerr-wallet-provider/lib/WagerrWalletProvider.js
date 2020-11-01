@@ -8,7 +8,7 @@ const NONCHANGE_ADDRESS = 0
 const CHANGE_ADDRESS = 1
 const NONCHANGE_OR_CHANGE_ADDRESS = 2
 
-const ADDRESS_TYPE_TO_PREFIX = { //TODO: wagerr
+const ADDRESS_TYPE_TO_PREFIX = { // TODO: wagerr
   'legacy': 44,
   'p2sh-segwit': 49,
   'bech32': 84

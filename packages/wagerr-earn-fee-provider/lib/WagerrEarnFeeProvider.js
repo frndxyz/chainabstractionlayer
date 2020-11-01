@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import { version } from '../package.json'
 
-export default class WagerrEarnFeeProvider extends Provider { //TODO: for wagerr
+export default class WagerrEarnFeeProvider extends Provider { // TODO: for wagerr
   constructor (endpoint = 'https://wagerrfees.earn.com/api/v1/fees/recommended') {
     super()
     this._endpoint = endpoint

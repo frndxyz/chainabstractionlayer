@@ -7,7 +7,7 @@ import { normalizeTransactionObject, decodeRawTransaction } from '@wagerr-wdk/wa
 
 import { version } from '../package.json'
 
-export default class WagerrRpcProvider extends JsonRpcProvider { //TODO: wagerr json rpc.
+export default class WagerrRpcProvider extends JsonRpcProvider { // TODO: wagerr json rpc.
   constructor (uri, username, password, numberOfBlockConfirmation = 1, defaultFeePerByte = 3) {
     super(uri, username, password)
     this._numberOfBlockConfirmation = numberOfBlockConfirmation

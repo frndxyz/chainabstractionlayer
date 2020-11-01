@@ -25,7 +25,7 @@ export default class WagerrSwapProvider extends Provider {
   getPubKeyHash (address) {
     const outputScript = wagerr.address.toOutputScript(address, this._network)
     const type = classify.output(outputScript)
-    if (![classify.types.P2PKH, classify.types.P2WPKH].includes(type)) { //TODO: wagerr for bet type tx
+    if (![classify.types.P2PKH, classify.types.P2WPKH].includes(type)) { // TODO: wagerr for bet type tx
       throw new Error(`Wagerr swap doesn't support the address ${address} type of ${type}. Not possible to derive public key hash.`)
     }
 

@@ -1,7 +1,7 @@
 import * as wagerrjs from '@wagerr-wdk/wagerrjs-lib'
 import { version } from '../package.json'
 
-export default { //TODO: wagerr network type
+export default { // TODO: wagerr network type
   wagerr: {
     name: 'wagerr',
     ...wagerrjs.networks.wagerr,

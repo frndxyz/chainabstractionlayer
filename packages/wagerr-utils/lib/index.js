@@ -68,7 +68,7 @@ function selectCoins (utxos, targets, feePerByte, fixedInputs = []) {
   return { inputs, outputs, fee }
 }
 
-const OUTPUT_TYPES_MAP = { //TODO: wagerr can add for bet type tx
+const OUTPUT_TYPES_MAP = { // TODO: wagerr can add for bet type tx
   [classify.types.P2WPKH]: 'witness_v0_keyhash',
   [classify.types.P2WSH]: 'witness_v0_scripthash'
 }

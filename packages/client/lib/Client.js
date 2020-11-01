@@ -49,8 +49,8 @@ export default class Client {
     }
 
     const ajv = new Ajv()
-    this.validateTransaction = ajv.compile(Transaction) //TODO: wagerr
-    this.validateBlock = ajv.compile(Block) //TODO: wagerr
+    this.validateTransaction = ajv.compile(Transaction) // TODO: wagerr
+    this.validateBlock = ajv.compile(Block) // TODO: wagerr
 
     this._chain = new Chain(this)
     this._wallet = new Wallet(this)

@@ -20,7 +20,7 @@ import { version } from '../package.json'
 
 export default class WagerrLedgerProvider extends WagerrWalletProvider(LedgerProvider) {
   constructor (network = networks.wagerr, addressType = 'bech32') {
-    super(network, addressType, [HwAppBitcoin, network, 'WGR']) //#TODO wagerr
+    super(network, addressType, [HwAppBitcoin, network, 'WGR']) // #TODO wagerr
     this._walletPublicKeyCache = {}
   }
 
@@ -61,7 +61,7 @@ export default class WagerrLedgerProvider extends WagerrWalletProvider(LedgerPro
       serializedOutputs,
       undefined,
       undefined,
-      ['bech32', 'p2sh-segwit'].includes(this._addressType), //TODO: for wagerr if required
+      ['bech32', 'p2sh-segwit'].includes(this._addressType), // TODO: for wagerr if required
       undefined,
       this._addressType === 'bech32' ? ['bech32'] : undefined
     ),

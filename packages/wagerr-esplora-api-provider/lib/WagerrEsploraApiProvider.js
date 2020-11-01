@@ -1,6 +1,6 @@
 import axios from 'axios'
 import Provider from '@wagerr-wdk/provider'
-import { isArray, flatten } from 'lodash'
+import { isArray } from 'lodash'
 import { decodeRawTransaction, normalizeTransactionObject } from '@wagerr-wdk/wagerr-utils'
 import BigNumber from 'bignumber.js'
 
@@ -26,8 +26,7 @@ export default class WagerrEsploraApiProvider extends Provider {
   async getFeePerByte (numberOfBlocks = this._numberOfBlockConfirmation) {
     try {
       const feeEstimates = (await this._axios(`/getfeeinfo?blocks=${numberOfBlocks}`)).data
-      
-      const rate = Math.round((feeEstimates * Math.pow(10,8))/1000)
+      const rate = Math.round((feeEstimates * Math.pow(10, 8)) / 1000)
       return rate
     } catch (e) {
       return this._defaultFeePerByte
@@ -46,12 +45,10 @@ export default class WagerrEsploraApiProvider extends Provider {
 
   async getBalance (addresses) {
     if (!isArray(addresses)) {
-      addresses = [ addresses ]
+      addresses = [addresses]
     }
 
     const utxos = await this.getUnspentTransactions(addresses)
-    
-
     return utxos
       .reduce((acc, utxo) => acc.plus(utxo.satoshis), new BigNumber(0))
   }
@@ -60,21 +57,21 @@ export default class WagerrEsploraApiProvider extends Provider {
     const response = await this._axios.get(`/custom/getunspenttransactions/${addresses}`)
     const currentHeight = await this.getBlockHeight()
     return response.data.map(utxo => ({
-      txid:utxo.txId,
-      vout:utxo.n,
+      txid: utxo.txId,
+      vout: utxo.n,
       blockHeight: utxo.blockHeight,
       address: addressToString(utxo.address),
-      satoshis: utxo.satoshi ,
+      satoshis: utxo.satoshi,
       amount: BigNumber(utxo.satoshi).dividedBy(1e8).toNumber(),
       confirmations: (currentHeight - utxo.blockHeight) + 1
     }))
   }
 
   async getUnspentTransactions (addresses) {
-    const addressesStrArray  = addresses.map((addr) => {
+    const addressesStrArray = addresses.map((addr) => {
       return addressToString(addr)
-    });
-    const addressesJoin = addressesStrArray.join(",")
+    })
+    const addressesJoin = addressesStrArray.join(',')
     const utxos = await this._getUnspentTransactions(addressesJoin)
     return utxos
   }
@@ -85,15 +82,14 @@ export default class WagerrEsploraApiProvider extends Provider {
   }
 
   async getAddressTransactionCounts (addresses) {
-    const addressesStrArray  = addresses.map((addr) => {
+    const addressesStrArray = addresses.map((addr) => {
       return addressToString(addr)
-    });
-    const addressesJoin = addressesStrArray.join(",")
+    })
+    const addressesJoin = addressesStrArray.join(',')
     const response = await this._getAddressesTransactionCount(addressesJoin)
-    
-   const transactionCountsArray = Object.keys(response).map((addr) => {
-    return { [addr]: response[addr].tx_counts}
-   })
+    const transactionCountsArray = Object.keys(response).map((addr) => {
+      return { [addr]: response[addr].tx_counts }
+    })
 
     const transactionCounts = Object.assign({}, ...transactionCountsArray)
     return transactionCounts
@@ -115,23 +111,23 @@ export default class WagerrEsploraApiProvider extends Provider {
     const confirmations = (currentHeight - tx.blockHeight) + 1
     const decodedTx = decodeRawTransaction(hex, this._network)
     decodedTx.confirmations = confirmations
-    return normalizeTransactionObject(decodedTx, /*tx.fee*/ 0.00014, { hash: tx.blockHash, number: tx.blockHeight })
+    return normalizeTransactionObject(decodedTx, /* tx.fee */ 0.00014, { hash: tx.blockHash, number: tx.blockHeight })
   }
 
   async getBlockTransactions (blockHash) {
     let transactions = []
     const currentHeight = await this.getBlockHeight()
-      try {
-        const response = await this._axios.get(`/getblocktransactions?blockhash=${blockHash}`)
-        const data = response.data
-        const txs = data.txs
-        if (isArray(txs)) {
-          transactions = transactions.concat(txs.map(tx => this.formatTransaction(tx, currentHeight)))
-        }
-      } catch (e) {
-        throw e
+    try {
+      const response = await this._axios.get(`/getblocktransactions?blockhash=${blockHash}`)
+      const data = response.data
+      const txs = data.txs
+      if (isArray(txs)) {
+        transactions = transactions.concat(txs.map(tx => this.formatTransaction(tx, currentHeight)))
       }
-    
+    } catch (e) {
+      throw e
+    }
+
     return transactions
   }
 
@@ -185,7 +181,7 @@ export default class WagerrEsploraApiProvider extends Provider {
   }
 
   async sendRawTransaction (rawTransaction) {
-    const response = await this._axios.post('/sendrawtransaction', { hexstring:rawTransaction })
+    const response = await this._axios.post('/sendrawtransaction', { hexstring: rawTransaction })
     return response.data
   }
 }
