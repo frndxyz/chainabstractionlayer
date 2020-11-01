@@ -19,16 +19,16 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.4.3",
-    "@wagerr-wdk/wagerr-utils": "^0.6.2",
-    "@wagerr-wdk/wagerr-wallet-provider": "^0.6.2",
     "@wagerr-wdk/jsonrpc-provider": "^0.6.2",
     "@wagerr-wdk/utils": "^0.6.2",
+    "@wagerr-wdk/wagerr-utils": "^0.6.2",
+    "@wagerr-wdk/wagerr-wallet-provider": "^0.6.2",
+    "@wagerr-wdk/wagerrjs-lib": "5.1.10",
+    "@wagerr-wdk/wagerrjs-message": "2.1.1",
     "@wagerr-wdk/wallet-provider": "^0.6.2",
     "bignumber.js": "^9.0.0",
     "bip32": "^1.0.2",
     "bip39": "^3.0.2",
-    "@wagerr-wdk/wagerrjs-lib": "5.1.10",
-    "@wagerr-wdk/wagerrjs-message": "2.1.1",
     "lodash": "^4.17.13"
   },
   "engines": {
@@ -44,5 +44,6 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "38484ad2ff986304a8c43b13846e352f31101f29"
 }
