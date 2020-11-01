@@ -1,0 +1,3 @@
+import WagerrEsploraSwapFindProvider from './WagerrEsploraSwapFindProvider'
+
+export default WagerrEsploraSwapFindProvider

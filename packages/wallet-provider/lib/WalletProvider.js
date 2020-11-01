@@ -1,7 +1,7 @@
 import { isEqual } from 'lodash'
 
-import Provider from '@liquality/provider'
-import { WalletError } from '@liquality/errors'
+import Provider from '@wagerr-wdk/provider'
+import { WalletError } from '@wagerr-wdk/errors'
 
 import { version } from '../package.json'
 

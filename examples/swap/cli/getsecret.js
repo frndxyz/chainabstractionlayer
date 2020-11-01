@@ -1,18 +1,18 @@
 var ChainAbstractionLayer = require('../../../packages/bundle')
 const { Client, providers, crypto } = ChainAbstractionLayer
-const networks = providers.bitcoin.networks
+const networks = providers.wagerr.networks
 
 var chains = {}
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0
 
-chains.bitcoin = new Client()
-chains.bitcoin.addProvider(new providers.bitcoin.BitcoreRpcProvider('https://bitcoin.liquality.io:443', 'liquality', 'liquality123'))
-chains.bitcoin.addProvider(new providers.bitcoin.BitcoinLedgerProvider({ network: networks.bitcoin, segwit: false }))
-chains.bitcoin.addProvider(new providers.bitcoin.BitcoinSwapProvider({ network: networks.bitcoin }))
+chains.wagerr = new Client()
+chains.wagerr.addProvider(new providers.wagerr.BitcoreRpcProvider('https://wagerr.liquality.io:443', 'liquality', 'liquality123'))
+chains.wagerr.addProvider(new providers.wagerr.WagerrLedgerProvider({ network: networks.wagerr, segwit: false }))
+chains.wagerr.addProvider(new providers.wagerr.WagerrSwapProvider({ network: networks.wagerr }))
 
 function doSwap () {
-  chains.bitcoin.swap.generateSecret('test').then(secret => {
-    chains.bitcoin.wallet.getUnusedAddress().then(address => {
+  chains.wagerr.swap.generateSecret('test').then(secret => {
+    chains.wagerr.wallet.getUnusedAddress().then(address => {
       var secretHash = crypto.sha256(secret)
       console.log(secret)
       console.log(secretHash)

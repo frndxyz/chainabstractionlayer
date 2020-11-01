@@ -1,7 +1,7 @@
 import axios from 'axios'
-import EthereumScraperSwapFindProvider from '@liquality/ethereum-scraper-swap-find-provider'
-import EthereumErc20SwapProvider from '@liquality/ethereum-erc20-swap-provider'
-import { remove0x } from '@liquality/ethereum-utils'
+import EthereumScraperSwapFindProvider from '@wagerr-wdk/ethereum-scraper-swap-find-provider'
+import EthereumErc20SwapProvider from '@wagerr-wdk/ethereum-erc20-swap-provider'
+import { remove0x } from '@wagerr-wdk/ethereum-utils'
 
 import { version } from '../package.json'
 

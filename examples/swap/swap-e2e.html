@@ -15,7 +15,7 @@
   <h1>Swap functionality</h1>
   <table width="100%">
     <thead>
-      <td><strong>Bitcoin</strong></td>
+      <td><strong>Wagerr</strong></td>
       <td><strong>Ethereum</strong></td>
     </thead>
     <tr>
@@ -104,11 +104,11 @@
   <script>
 /* global $, Bundle, web3 */
 const { Client, providers, crypto } = Bundle
-const bitcoinNetworks = providers.bitcoin.networks.default
-const bitcoin = new Client()
-bitcoin.addProvider(new providers.bitcoin.BitcoinRpcProvider('http://localhost:17772', 'bitcoin', 'local321'))
-bitcoin.addProvider(new providers.bitcoin.BitcoinLedgerProvider({ network: bitcoinNetworks.bitcoin_regtest }))
-bitcoin.addProvider(new providers.bitcoin.BitcoinSwapProvider({ network: bitcoinNetworks.bitcoin_regtest }))
+const wagerrNetworks = providers.wagerr.networks.default
+const wagerr = new Client()
+wagerr.addProvider(new providers.wagerr.WagerrRpcProvider('http://localhost:17772', 'wagerr', 'local321'))
+wagerr.addProvider(new providers.wagerr.WagerrLedgerProvider({ network: wagerrNetworks.wagerr_regtest }))
+wagerr.addProvider(new providers.wagerr.WagerrSwapProvider({ network: wagerrNetworks.wagerr_regtest }))
 
 const ethereum = new Client()
 ethereum.addProvider(new providers.ethereum.EthereumRpcProvider('http://localhost:8545'))
@@ -194,11 +194,11 @@ function refundSwap (client, prefix) {
   })
 }
 
-$('#btcGenerateSecret').click(generateSecret.bind(null, bitcoin, 'btc'))
-$('#btcInitiateSwap').click(initiateSwap.bind(null, bitcoin, 'btc'))
-$('#btcVerifySwap').click(verifySwap.bind(null, bitcoin, 'btc'))
-$('#btcClaimSwap').click(claimSwap.bind(null, bitcoin, 'btc'))
-$('#btcRefundSwap').click(refundSwap.bind(null, bitcoin, 'btc'))
+$('#btcGenerateSecret').click(generateSecret.bind(null, wagerr, 'btc'))
+$('#btcInitiateSwap').click(initiateSwap.bind(null, wagerr, 'btc'))
+$('#btcVerifySwap').click(verifySwap.bind(null, wagerr, 'btc'))
+$('#btcClaimSwap').click(claimSwap.bind(null, wagerr, 'btc'))
+$('#btcRefundSwap').click(refundSwap.bind(null, wagerr, 'btc'))
 
 $('#ethGenerateSecret').click(generateSecret.bind(null, ethereum, 'eth'))
 $('#ethInitiateSwap').click(initiateSwap.bind(null, ethereum, 'eth'))

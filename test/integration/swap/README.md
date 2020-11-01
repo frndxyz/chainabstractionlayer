@@ -10,9 +10,9 @@ There are 2 categories of tests:
 ## Pre-requisites
 
 ### Node only
-To run the node based swap tests, a node of each chain (Bitcoin and Ethereum) is needed. The following nodes were used to develop and run these tests:
+To run the node based swap tests, a node of each chain (Wagerr and Ethereum) is needed. The following nodes were used to develop and run these tests:
 
-- *Bitcoin:* Regtest bitcoin core node.
+- *Wagerr:* Regtest wagerr core node.
 - *Ethereum:* Geth client in dev mode (5s blocktime).
 
 Ensure that the wallets are unlocked on these nodes.
@@ -20,7 +20,7 @@ Ensure that the wallets are unlocked on these nodes.
 If the nodes are not running on the default host and port, modifications to `config.js` will be required to point the tests to the correct locations.
 
 ### Wallet (Ledger)
-Running the bitcoin swaps through a ledger requires a ledger device. The ledger device must have addresses that have a bitcoin balance on the given network. Watch the prompts on the ledger to make approvals as required by the tests.
+Running the wagerr swaps through a ledger requires a ledger device. The ledger device must have addresses that have a wagerr balance on the given network. Watch the prompts on the ledger to make approvals as required by the tests.
 
 ### Wallet (MetaMask)
 Swaps happening using MetaMask will require an unlocked MetaMask wallet with balances on the given network (usually local Geth node). 

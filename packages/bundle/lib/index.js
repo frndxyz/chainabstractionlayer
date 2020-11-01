@@ -1,13 +1,13 @@
-import Client from '@liquality/client'
-import Provider from '@liquality/provider'
-import JsonRpcProvider from '@liquality/jsonrpc-provider'
-import LedgerProvider from '@liquality/ledger-provider'
-import Debug from '@liquality/debug'
+import Client from '@wagerr-wdk/client'
+import Provider from '@wagerr-wdk/provider'
+import JsonRpcProvider from '@wagerr-wdk/jsonrpc-provider'
+import LedgerProvider from '@wagerr-wdk/ledger-provider'
+import Debug from '@wagerr-wdk/debug'
 
-import * as crypto from '@liquality/crypto'
-import * as schema from '@liquality/schema'
-import * as errors from '@liquality/errors'
-import * as utils from '@liquality/utils'
+import * as crypto from '@wagerr-wdk/crypto'
+import * as schema from '@wagerr-wdk/schema'
+import * as errors from '@wagerr-wdk/errors'
+import * as utils from '@wagerr-wdk/utils'
 
 import * as providers from './providers'
 

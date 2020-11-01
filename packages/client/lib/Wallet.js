@@ -1,6 +1,6 @@
 import { isArray } from 'lodash'
 
-import { InvalidProviderResponseError, UnimplementedMethodError } from '@liquality/errors'
+import { InvalidProviderResponseError, UnimplementedMethodError } from '@wagerr-wdk/errors'
 
 export default class Wallet {
   constructor (client) {

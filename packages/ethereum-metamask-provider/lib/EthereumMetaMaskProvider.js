@@ -1,19 +1,19 @@
 import { findKey } from 'lodash'
 
-import MetaMaskProvider from '@liquality/metamask-provider'
-import networks from '@liquality/ethereum-networks'
+import MetaMaskProvider from '@wagerr-wdk/metamask-provider'
+import networks from '@wagerr-wdk/ethereum-networks'
 import {
   WalletError
-} from '@liquality/errors'
+} from '@wagerr-wdk/errors'
 import {
   ensure0x,
   remove0x,
   buildTransaction
-} from '@liquality/ethereum-utils'
+} from '@wagerr-wdk/ethereum-utils'
 import {
   Address,
   addressToString
-} from '@liquality/utils'
+} from '@wagerr-wdk/utils'
 
 import { version } from '../package.json'
 

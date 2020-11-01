@@ -1,16 +1,16 @@
 import { isArray } from 'lodash'
 import { BigNumber } from 'bignumber.js'
 
-import JsonRpcProvider from '@liquality/jsonrpc-provider'
+import JsonRpcProvider from '@wagerr-wdk/jsonrpc-provider'
 import {
   formatEthResponse,
   ensure0x,
   normalizeTransactionObject,
   remove0x,
   buildTransaction
-} from '@liquality/ethereum-utils'
-import { addressToString, Address, sleep } from '@liquality/utils'
-import { padHexStart } from '@liquality/crypto'
+} from '@wagerr-wdk/ethereum-utils'
+import { addressToString, Address, sleep } from '@wagerr-wdk/utils'
+import { padHexStart } from '@wagerr-wdk/crypto'
 
 import { version } from '../package.json'
 

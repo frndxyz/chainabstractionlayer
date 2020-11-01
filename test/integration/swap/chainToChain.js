@@ -2,7 +2,7 @@
 import chai, { expect } from 'chai'
 import chaiAsPromised from 'chai-as-promised'
 import { crypto } from '../../../packages/bundle/lib'
-import { chains, initiateAndVerify, claimAndVerify, getSwapParams, connectMetaMask, fundWallet, importBitcoinAddresses, describeExternal } from '../common'
+import { chains, initiateAndVerify, claimAndVerify, getSwapParams, connectMetaMask, fundWallet, importWagerrAddresses, describeExternal } from '../common'
 import config from '../config'
 
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0
@@ -30,16 +30,16 @@ describe('Swap Chain to Chain', function () {
 
   describeExternal('Ledger to Node', function () {
     before(async () => {
-      await importBitcoinAddresses(chains.bitcoinWithLedger)
-      await fundWallet(chains.bitcoinWithLedger)
+      await importWagerrAddresses(chains.wagerrWithLedger)
+      await fundWallet(chains.wagerrWithLedger)
     })
 
     it('BTC (Ledger) - BTC (Node)', async () => {
-      await testSwap(chains.bitcoinWithLedger, chains.bitcoinWithNode)
+      await testSwap(chains.wagerrWithLedger, chains.wagerrWithNode)
     })
 
     it('BTC (Node) - BTC (Ledger)', async () => {
-      await testSwap(chains.bitcoinWithNode, chains.bitcoinWithLedger)
+      await testSwap(chains.wagerrWithNode, chains.wagerrWithLedger)
     })
   })
 
@@ -47,43 +47,43 @@ describe('Swap Chain to Chain', function () {
     connectMetaMask()
 
     before(async () => {
-      await importBitcoinAddresses(chains.bitcoinWithLedger)
-      await fundWallet(chains.bitcoinWithLedger)
+      await importWagerrAddresses(chains.wagerrWithLedger)
+      await fundWallet(chains.wagerrWithLedger)
       await fundWallet(chains.ethereumWithMetaMask)
     })
 
     it('BTC (Ledger) - ETH (MetaMask)', async () => {
-      await testSwap(chains.bitcoinWithLedger, chains.ethereumWithMetaMask)
+      await testSwap(chains.wagerrWithLedger, chains.ethereumWithMetaMask)
     })
 
     it('ETH (MetaMask) - BTC (Ledger)', async () => {
-      await testSwap(chains.ethereumWithMetaMask, chains.bitcoinWithLedger)
+      await testSwap(chains.ethereumWithMetaMask, chains.wagerrWithLedger)
     })
   })
 
   describe('Node to Node', function () {
     it('BTC (Node) - ETH (Node)', async () => {
-      await testSwap(chains.bitcoinWithNode, chains.ethereumWithNode)
+      await testSwap(chains.wagerrWithNode, chains.ethereumWithNode)
     })
 
     it('ETH (Node) - BTC (Node)', async () => {
-      await testSwap(chains.ethereumWithNode, chains.bitcoinWithNode)
+      await testSwap(chains.ethereumWithNode, chains.wagerrWithNode)
     })
   })
 
   describe('JS to JS', function () {
     before(async () => {
-      await importBitcoinAddresses(chains.bitcoinWithJs)
-      await fundWallet(chains.bitcoinWithJs)
+      await importWagerrAddresses(chains.wagerrWithJs)
+      await fundWallet(chains.wagerrWithJs)
       await fundWallet(chains.ethereumWithJs)
     })
 
     it('BTC (JS) - ETH (JS)', async () => {
-      await testSwap(chains.bitcoinWithJs, chains.ethereumWithJs)
+      await testSwap(chains.wagerrWithJs, chains.ethereumWithJs)
     })
 
     it('ETH (JS) - BTC (JS)', async () => {
-      await testSwap(chains.ethereumWithJs, chains.bitcoinWithJs)
+      await testSwap(chains.ethereumWithJs, chains.wagerrWithJs)
     })
   })
 })

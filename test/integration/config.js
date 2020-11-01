@@ -1,11 +1,11 @@
 export default {
-  bitcoin: {
+  wagerr: {
     rpc: {
       host: 'http://localhost:18443',
-      username: 'bitcoin',
+      username: 'wagerr',
       password: 'local321'
     },
-    network: 'bitcoin_regtest',
+    network: 'wagerr_regtest',
     value: 1000000,
     mineBlocks: true,
     kibaConnector: {

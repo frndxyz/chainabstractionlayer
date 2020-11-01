@@ -2,9 +2,9 @@ import axios from 'axios'
 import JSONBigInt from 'json-bigint'
 import { get, has } from 'lodash'
 
-import Provider from '@liquality/provider'
-import Debug from '@liquality/debug'
-import { NodeError, RpcError } from '@liquality/errors'
+import Provider from '@wagerr-wdk/provider'
+import Debug from '@wagerr-wdk/debug'
+import { NodeError, RpcError } from '@wagerr-wdk/errors'
 
 import { version } from '../package.json'
 

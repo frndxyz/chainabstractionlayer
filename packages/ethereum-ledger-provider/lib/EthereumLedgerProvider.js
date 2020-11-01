@@ -1,18 +1,18 @@
 import { BigNumber } from 'bignumber.js'
 import EthereumJsTx from 'ethereumjs-tx'
 
-import LedgerProvider from '@liquality/ledger-provider'
+import LedgerProvider from '@wagerr-wdk/ledger-provider'
 import Ethereum from '@ledgerhq/hw-app-eth'
 
-import networks from '@liquality/ethereum-networks'
+import networks from '@wagerr-wdk/ethereum-networks'
 import {
   ensure0x,
   remove0x,
   buildTransaction,
   formatEthResponse,
   normalizeTransactionObject
-} from '@liquality/ethereum-utils'
-import { Address, addressToString } from '@liquality/utils'
+} from '@wagerr-wdk/ethereum-utils'
+import { Address, addressToString } from '@wagerr-wdk/utils'
 
 import { version } from '../package.json'
 

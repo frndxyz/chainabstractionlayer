@@ -1,5 +1,5 @@
 {
-  "name": "@liquality/errors",
+  "name": "@wagerr-wdk/errors",
   "umdName": "CALErrors",
   "version": "0.6.2",
   "description": "",
@@ -23,13 +23,13 @@
   "engines": {
     "node": "~8.12.0"
   },
-  "homepage": "https://github.com/liquality/chainabstractionlayer#readme",
+  "homepage": "https://github.com/wagerr/chainabstractionlayer#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/liquality/chainabstractionlayer.git"
+    "url": "git+https://github.com/wagerr/chainabstractionlayer.git"
   },
   "bugs": {
-    "url": "https://github.com/liquality/chainabstractionlayer/issues"
+    "url": "https://github.com/wagerr/chainabstractionlayer/issues"
   },
   "publishConfig": {
     "access": "public"

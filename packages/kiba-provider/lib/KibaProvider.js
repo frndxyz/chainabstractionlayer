@@ -1,4 +1,4 @@
-import Provider from '@liquality/provider'
+import Provider from '@wagerr-wdk/provider'
 
 import { version } from '../package.json'
 
@@ -11,7 +11,7 @@ export default class KibaProvider extends Provider {
   }
 
   async kiba (method, params) {
-    const blockchain = this._network.name.startsWith('bitcoin') ? 'bitcoin' : 'ethereum'
+    const blockchain = this._network.name.startsWith('wagerr') ? 'wagerr' : 'ethereum' //todo wagerr
 
     await this._kibaProvider.request('ENABLE', { networkPreferences: [{ blockchain }] })
 

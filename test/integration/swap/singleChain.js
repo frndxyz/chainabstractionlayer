@@ -5,7 +5,7 @@ import chai, { expect } from 'chai'
 import chaiAsPromised from 'chai-as-promised'
 import _ from 'lodash'
 import { crypto, providers } from '../../../packages/bundle/lib'
-import { chains, initiateAndVerify, claimAndVerify, refundAndVerify, getSwapParams, expectBalance, deployERC20Token, connectMetaMask, fundWallet, importBitcoinAddresses, stopEthAutoMining, mineUntilTimestamp, CONSTANTS, describeExternal, mineBlock, expectFee } from '../common'
+import { chains, initiateAndVerify, claimAndVerify, refundAndVerify, getSwapParams, expectBalance, deployERC20Token, connectMetaMask, fundWallet, importWagerrAddresses, stopEthAutoMining, mineUntilTimestamp, CONSTANTS, describeExternal, mineBlock, expectFee } from '../common'
 import config from '../config'
 
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0
@@ -13,7 +13,7 @@ process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0
 chai.use(chaiAsPromised)
 chai.use(require('chai-bignumber')())
 
-const { calculateFee } = providers.bitcoin.BitcoinUtils
+const { calculateFee } = providers.wagerr.WagerrUtils
 const mockSecret = _.repeat('ff', 32)
 
 function testSwap (chain) {
@@ -139,7 +139,7 @@ function testEthereumBalance (chain) {
   })
 }
 
-function testBitcoinBalance (chain) {
+function testWagerrBalance (chain) {
   it('Balance - Claim', async () => {
     const secretHash = crypto.sha256(mockSecret)
     const swapParams = await getSwapParams(chain)
@@ -236,30 +236,30 @@ function testFee (chain) {
 describe('Swap Single Chain Flow', function () {
   this.timeout(config.timeout)
 
-  describeExternal('Bitcoin - Ledger', () => {
+  describeExternal('Wagerr - Ledger', () => {
     before(async function () {
-      await importBitcoinAddresses(chains.bitcoinWithLedger)
-      await fundWallet(chains.bitcoinWithLedger)
+      await importWagerrAddresses(chains.wagerrWithLedger)
+      await fundWallet(chains.wagerrWithLedger)
     })
-    testSwap(chains.bitcoinWithLedger)
-    testBitcoinBalance(chains.bitcoinWithLedger)
-    testFee(chains.bitcoinWithLedger)
+    testSwap(chains.wagerrWithLedger)
+    testWagerrBalance(chains.wagerrWithLedger)
+    testFee(chains.wagerrWithLedger)
   })
 
-  describe('Bitcoin - Node', () => {
-    testSwap(chains.bitcoinWithNode)
-    testBitcoinBalance(chains.bitcoinWithNode)
-    testFee(chains.bitcoinWithNode)
+  describe('Wagerr - Node', () => {
+    testSwap(chains.wagerrWithNode)
+    testWagerrBalance(chains.wagerrWithNode)
+    testFee(chains.wagerrWithNode)
   })
 
-  describe('Bitcoin - Js', () => {
+  describe('Wagerr - Js', () => {
     before(async function () {
-      await importBitcoinAddresses(chains.bitcoinWithJs)
-      await fundWallet(chains.bitcoinWithJs)
+      await importWagerrAddresses(chains.wagerrWithJs)
+      await fundWallet(chains.wagerrWithJs)
     })
-    testSwap(chains.bitcoinWithJs)
-    testBitcoinBalance(chains.bitcoinWithJs)
-    testFee(chains.bitcoinWithJs)
+    testSwap(chains.wagerrWithJs)
+    testWagerrBalance(chains.wagerrWithJs)
+    testFee(chains.wagerrWithJs)
   })
 
   describe('Ethereum', () => {

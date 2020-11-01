@@ -2,7 +2,7 @@ import { find, findLast, findLastIndex, isFunction } from 'lodash'
 import debug from 'debug'
 import Ajv from 'ajv'
 
-import { Block, Transaction } from '@liquality/schema'
+import { Block, Transaction } from '@wagerr-wdk/schema'
 
 import {
   DuplicateProviderError,
@@ -11,7 +11,7 @@ import {
   UnimplementedMethodError,
   UnsupportedMethodError,
   InvalidProviderResponseError
-} from '@liquality/errors'
+} from '@wagerr-wdk/errors'
 
 import Chain from './Chain'
 import Wallet from './Wallet'
@@ -49,8 +49,8 @@ export default class Client {
     }
 
     const ajv = new Ajv()
-    this.validateTransaction = ajv.compile(Transaction)
-    this.validateBlock = ajv.compile(Block)
+    this.validateTransaction = ajv.compile(Transaction) //TODO: wagerr
+    this.validateBlock = ajv.compile(Block) //TODO: wagerr
 
     this._chain = new Chain(this)
     this._wallet = new Wallet(this)

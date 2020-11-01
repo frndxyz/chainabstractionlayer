@@ -1,4 +1,4 @@
-import * as coininfo from 'coininfo'
+import * as coininfo from '@wagerr-wdk/coininfo'
 import { version } from '../package.json'
 
 export default {

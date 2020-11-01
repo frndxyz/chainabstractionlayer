@@ -1,5 +1,5 @@
 {
-  "name": "@liquality/ethereum-scraper-swap-find-provider",
+  "name": "@wagerr-wdk/ethereum-scraper-swap-find-provider",
   "umdName": "EthereumScraperSwapFindProvider",
   "umdExport": "default",
   "version": "0.6.2",
@@ -19,22 +19,22 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.4.3",
-    "@liquality/crypto": "^0.6.2",
-    "@liquality/ethereum-utils": "^0.6.2",
-    "@liquality/provider": "^0.6.2",
-    "@liquality/utils": "^0.6.2",
+    "@wagerr-wdk/crypto": "^0.6.2",
+    "@wagerr-wdk/ethereum-utils": "^0.6.2",
+    "@wagerr-wdk/provider": "^0.6.2",
+    "@wagerr-wdk/utils": "^0.6.2",
     "axios": "^0.19.0"
   },
   "engines": {
     "node": "~8.12.0"
   },
-  "homepage": "https://github.com/liquality/chainabstractionlayer#readme",
+  "homepage": "https://github.com/wagerr/chainabstractionlayer#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/liquality/chainabstractionlayer.git"
+    "url": "git+https://github.com/wagerr/chainabstractionlayer.git"
   },
   "bugs": {
-    "url": "https://github.com/liquality/chainabstractionlayer/issues"
+    "url": "https://github.com/wagerr/chainabstractionlayer/issues"
   },
   "publishConfig": {
     "access": "public"

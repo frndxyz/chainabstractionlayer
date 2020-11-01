@@ -1,11 +1,11 @@
 import axios from 'axios'
-import Provider from '@liquality/provider'
+import Provider from '@wagerr-wdk/provider'
 import {
   ensure0x,
   normalizeTransactionObject,
   formatEthResponse
-} from '@liquality/ethereum-utils'
-import { addressToString } from '@liquality/utils'
+} from '@wagerr-wdk/ethereum-utils'
+import { addressToString } from '@wagerr-wdk/utils'
 
 import { version } from '../package.json'
 

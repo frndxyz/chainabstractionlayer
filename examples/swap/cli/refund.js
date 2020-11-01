@@ -1,20 +1,20 @@
 var ChainAbstractionLayer = require('../../../packages/bundle')
 const { Client, providers } = ChainAbstractionLayer
-const networks = providers.bitcoin.networks
+const networks = providers.wagerr.networks
 
 var chains = {}
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0
 
-chains.bitcoin = new Client()
-chains.bitcoin.addProvider(new providers.bitcoin.BitcoreRpcProvider('https://bitcoin.liquality.io:443', 'liquality', 'liquality123'))
-chains.bitcoin.addProvider(new providers.bitcoin.BitcoinLedgerProvider({ network: networks.bitcoin, segwit: false }))
-chains.bitcoin.addProvider(new providers.bitcoin.BitcoinSwapProvider({ network: networks.bitcoin }))
+chains.wagerr = new Client()
+chains.wagerr.addProvider(new providers.wagerr.BitcoreRpcProvider('https://wagerr.liquality.io:443', 'liquality', 'liquality123'))
+chains.wagerr.addProvider(new providers.wagerr.WagerrLedgerProvider({ network: networks.wagerr, segwit: false }))
+chains.wagerr.addProvider(new providers.wagerr.WagerrSwapProvider({ network: networks.wagerr }))
 
 var initiationTxHash = ''
 var recipientAddress = ''
 var refundAddress = ''
 var secretHash = ''
 var expiration = 1468194353
-chains.bitcoin.swap.refundSwap(initiationTxHash, recipientAddress, refundAddress, secretHash, expiration).then((ret) => {
+chains.wagerr.swap.refundSwap(initiationTxHash, recipientAddress, refundAddress, secretHash, expiration).then((ret) => {
   console.log('here', ret)
 })

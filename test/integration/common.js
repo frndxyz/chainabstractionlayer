@@ -24,42 +24,42 @@ const CONSTANTS = {
 console.warn = () => {} // Silence warnings
 
 const metaMaskConnector = new MetaMaskConnector({ port: config.ethereum.metaMaskConnector.port })
-const kibaConnector = new KibaConnector({ port: config.bitcoin.kibaConnector.port })
+const kibaConnector = new KibaConnector({ port: config.wagerr.kibaConnector.port })
 
-const bitcoinNetworks = providers.bitcoin.networks
-const bitcoinNetwork = bitcoinNetworks[config.bitcoin.network]
+const wagerrNetworks = providers.wagerr.networks
+const wagerrNetwork = wagerrNetworks[config.wagerr.network]
 
-function mockedBitcoinRpcProvider () {
-  const bitcoinRpcProvider = new providers.bitcoin.BitcoinRpcProvider(config.bitcoin.rpc.host, config.bitcoin.rpc.username, config.bitcoin.rpc.password)
+function mockedWagerrRpcProvider () {
+  const wagerrRpcProvider = new providers.wagerr.WagerrRpcProvider(config.wagerr.rpc.host, config.wagerr.rpc.username, config.wagerr.rpc.password)
   // Mock Fee Per Byte to prevent from changing
-  bitcoinRpcProvider.getFeePerByte = async () => CONSTANTS.BITCOIN_FEE_PER_BYTE
-  return bitcoinRpcProvider
+  wagerrRpcProvider.getFeePerByte = async () => CONSTANTS.BITCOIN_FEE_PER_BYTE
+  return wagerrRpcProvider
 }
 
-const bitcoinWithLedger = new Client()
-bitcoinWithLedger.addProvider(mockedBitcoinRpcProvider())
-bitcoinWithLedger.addProvider(new providers.bitcoin.BitcoinLedgerProvider(bitcoinNetwork, 'bech32'))
-bitcoinWithLedger.addProvider(new providers.bitcoin.BitcoinSwapProvider(bitcoinNetwork, 'p2wsh'))
+const wagerrWithLedger = new Client()
+wagerrWithLedger.addProvider(mockedWagerrRpcProvider())
+wagerrWithLedger.addProvider(new providers.wagerr.WagerrLedgerProvider(wagerrNetwork, 'bech32'))
+wagerrWithLedger.addProvider(new providers.wagerr.WagerrSwapProvider(wagerrNetwork, 'p2wsh'))
 
-const bitcoinWithNode = new Client()
-bitcoinWithNode.addProvider(mockedBitcoinRpcProvider())
-bitcoinWithNode.addProvider(new providers.bitcoin.BitcoinNodeWalletProvider(bitcoinNetwork, config.bitcoin.rpc.host, config.bitcoin.rpc.username, config.bitcoin.rpc.password, 'bech32'))
-bitcoinWithNode.addProvider(new providers.bitcoin.BitcoinSwapProvider(bitcoinNetwork, 'p2wsh'))
+const wagerrWithNode = new Client()
+wagerrWithNode.addProvider(mockedWagerrRpcProvider())
+wagerrWithNode.addProvider(new providers.wagerr.WagerrNodeWalletProvider(wagerrNetwork, config.wagerr.rpc.host, config.wagerr.rpc.username, config.wagerr.rpc.password, 'bech32'))
+wagerrWithNode.addProvider(new providers.wagerr.WagerrSwapProvider(wagerrNetwork, 'p2wsh'))
 
-const bitcoinWithJs = new Client()
-bitcoinWithJs.addProvider(mockedBitcoinRpcProvider())
-bitcoinWithJs.addProvider(new providers.bitcoin.BitcoinJsWalletProvider(bitcoinNetwork, generateMnemonic(256), 'bech32'))
-bitcoinWithJs.addProvider(new providers.bitcoin.BitcoinSwapProvider(bitcoinNetwork, 'p2wsh'))
+const wagerrWithJs = new Client()
+wagerrWithJs.addProvider(mockedWagerrRpcProvider())
+wagerrWithJs.addProvider(new providers.wagerr.WagerrJsWalletProvider(wagerrNetwork, generateMnemonic(256), 'bech32'))
+wagerrWithJs.addProvider(new providers.wagerr.WagerrSwapProvider(wagerrNetwork, 'p2wsh'))
 
-// To run bitcoinWithKiba tests create a testnetConfig.js with testnetHost, testnetUsername, testnetConfig, testnetApi, testnetNetwork
-const bitcoinWithKiba = new Client()
-bitcoinWithKiba.addProvider(new providers.bitcoin.BitcoinRpcProvider(testnetConfig.bitcoin.rpc.testnetHost, testnetConfig.bitcoin.rpc.testnetUsername, testnetConfig.bitcoin.rpc.testnetPassword))
-bitcoinWithKiba.addProvider(new providers.bitcoin.BitcoinEsploraApiProvider(testnetConfig.bitcoin.rpc.testnetApi))
-bitcoinWithKiba.addProvider(new providers.bitcoin.BitcoinKibaProvider(kibaConnector.getProvider(), bitcoinNetworks[testnetConfig.bitcoin.testnetNetwork]))
+// To run wagerrWithKiba tests create a testnetConfig.js with testnetHost, testnetUsername, testnetConfig, testnetApi, testnetNetwork
+const wagerrWithKiba = new Client()
+wagerrWithKiba.addProvider(new providers.wagerr.WagerrRpcProvider(testnetConfig.wagerr.rpc.testnetHost, testnetConfig.wagerr.rpc.testnetUsername, testnetConfig.wagerr.rpc.testnetPassword))
+wagerrWithKiba.addProvider(new providers.wagerr.WagerrEsploraApiProvider(testnetConfig.wagerr.rpc.testnetApi))
+wagerrWithKiba.addProvider(new providers.wagerr.WagerrKibaProvider(kibaConnector.getProvider(), wagerrNetworks[testnetConfig.wagerr.testnetNetwork]))
 
-const bitcoinWithEsplora = new Client()
-bitcoinWithEsplora.addProvider(new providers.bitcoin.BitcoinEsploraApiProvider('https://blockstream.info/testnet/api'))
-bitcoinWithEsplora.addProvider(new providers.bitcoin.BitcoinJsWalletProvider(bitcoinNetworks.bitcoin_testnet, generateMnemonic(256), 'bech32'))
+const wagerrWithEsplora = new Client()
+wagerrWithEsplora.addProvider(new providers.wagerr.WagerrEsploraApiProvider('https://blockstream.info/testnet/api'))
+wagerrWithEsplora.addProvider(new providers.wagerr.WagerrJsWalletProvider(wagerrNetworks.wagerr_testnet, generateMnemonic(256), 'bech32'))
 
 const ethereumNetworks = providers.ethereum.networks
 const ethereumNetwork = {
@@ -112,11 +112,11 @@ erc20WithJs.addProvider(new providers.ethereum.EthereumErc20Provider(CONSTANTS.E
 erc20WithJs.addProvider(new providers.ethereum.EthereumErc20SwapProvider())
 
 const chains = {
-  bitcoinWithLedger: { id: 'Bitcoin Ledger', name: 'bitcoin', client: bitcoinWithLedger, network: bitcoinNetwork },
-  bitcoinWithNode: { id: 'Bitcoin Node', name: 'bitcoin', client: bitcoinWithNode, network: bitcoinNetwork, segwitFeeImplemented: true },
-  bitcoinWithJs: { id: 'Bitcoin Js', name: 'bitcoin', client: bitcoinWithJs, network: bitcoinNetwork },
-  bitcoinWithKiba: { id: 'Bitcoin Kiba', name: 'bitcoin', client: bitcoinWithKiba, network: bitcoinNetworks['bitcoin_testnet'] },
-  bitcoinWithEsplora: { id: 'Bitcoin Esplora', name: 'bitcoin', client: bitcoinWithEsplora },
+  wagerrWithLedger: { id: 'Wagerr Ledger', name: 'wagerr', client: wagerrWithLedger, network: wagerrNetwork },
+  wagerrWithNode: { id: 'Wagerr Node', name: 'wagerr', client: wagerrWithNode, network: wagerrNetwork, segwitFeeImplemented: true },
+  wagerrWithJs: { id: 'Wagerr Js', name: 'wagerr', client: wagerrWithJs, network: wagerrNetwork },
+  wagerrWithKiba: { id: 'Wagerr Kiba', name: 'wagerr', client: wagerrWithKiba, network: wagerrNetworks['wagerr_testnet'] },
+  wagerrWithEsplora: { id: 'Wagerr Esplora', name: 'wagerr', client: wagerrWithEsplora },
   ethereumWithMetaMask: { id: 'Ethereum MetaMask', name: 'ethereum', client: ethereumWithMetaMask },
   ethereumWithNode: { id: 'Ethereum Node', name: 'ethereum', client: ethereumWithNode },
   ethereumWithLedger: { id: 'Ethereum Ledger', name: 'ethereum', client: ethereumWithLedger },
@@ -141,13 +141,13 @@ async function getSwapParams (chain) {
   }
 }
 
-async function importBitcoinAddresses (chain) {
+async function importWagerrAddresses (chain) {
   return chain.client.getMethod('importAddresses')()
 }
 
 async function fundAddress (chain, address) {
-  if (chain.name === 'bitcoin') {
-    await chains.bitcoinWithNode.client.chain.sendTransaction(address, CONSTANTS.BITCOIN_ADDRESS_DEFAULT_BALANCE)
+  if (chain.name === 'wagerr') {
+    await chains.wagerrWithNode.client.chain.sendTransaction(address, CONSTANTS.BITCOIN_ADDRESS_DEFAULT_BALANCE)
   } else if (chain.name === 'ethereum') {
     await chains.ethereumWithNode.client.chain.sendTransaction(address, CONSTANTS.ETHEREUM_ADDRESS_DEFAULT_BALANCE)
   }
@@ -174,7 +174,7 @@ async function getRandomAddress (chain) {
   if (chain.name === 'ethereum') {
     return getRandomEthereumAddress()
   } else {
-    return getRandomBitcoinAddress(chain)
+    return getRandomWagerrAddress(chain)
   }
 }
 
@@ -185,8 +185,8 @@ function getRandomEthereumAddress () {
   return { address }
 }
 
-async function getRandomBitcoinAddress (chain) {
-  return findProvider(chain.client, providers.bitcoin.BitcoinRpcProvider).jsonrpc('getnewaddress')
+async function getRandomWagerrAddress (chain) {
+  return findProvider(chain.client, providers.wagerr.WagerrRpcProvider).jsonrpc('getnewaddress')
 }
 
 async function mineBlock (chain) {
@@ -264,12 +264,12 @@ async function refundAndVerify (chain, initiationTxId, secretHash, swapParams, f
 async function expectBalance (chain, address, func, comparison) {
   const balanceBefore = await chain.client.chain.getBalance([address])
   await func()
-  if (chain.name === 'bitcoin') await sleep(1000) // Node seems to need a little bit of time to process utxos
+  if (chain.name === 'wagerr') await sleep(1000) // Node seems to need a little bit of time to process utxos
   const balanceAfter = await chain.client.chain.getBalance([address])
   comparison(balanceBefore, balanceAfter)
 }
 
-async function getBitcoinTransactionFee (chain, tx) {
+async function getWagerrTransactionFee (chain, tx) {
   const inputs = tx._raw.vin.map((vin) => ({ txid: vin.txid, vout: vin.vout }))
   const inputTransactions = await Promise.all(
     inputs.map(input => chain.client.chain.getTransactionByHash(input.txid))
@@ -289,24 +289,24 @@ async function getBitcoinTransactionFee (chain, tx) {
 }
 
 async function expectFee (chain, txHash, expectedFeePerByte, swapInitiate = false, swapRedeem = false) {
-  if (chain.name === 'bitcoin') {
+  if (chain.name === 'wagerr') {
     return swapRedeem // It's dumb because it does legacy calculation using 1 input 1 output
-      ? expectBitcoinSwapRedeemFee(chain, txHash, expectedFeePerByte)
-      : expectBitcoinFee(chain, txHash, expectedFeePerByte, swapInitiate)
+      ? expectWagerrSwapRedeemFee(chain, txHash, expectedFeePerByte)
+      : expectWagerrFee(chain, txHash, expectedFeePerByte, swapInitiate)
   }
   if (chain.name === 'ethereum') {
     return expectEthereumFee(chain, txHash, expectedFeePerByte)
   }
 }
 
-async function expectBitcoinFee (chain, txHash, expectedFeePerByte, payToScript) {
+async function expectWagerrFee (chain, txHash, expectedFeePerByte, payToScript) {
   const tx = await chain.client.chain.getTransactionByHash(txHash)
-  const fee = await getBitcoinTransactionFee(chain, tx)
+  const fee = await getWagerrTransactionFee(chain, tx)
   let size = chain.segwitFeeImplemented ? tx._raw.vsize : tx._raw.size
   if (payToScript && (chain.id.includes('Ledger') || chain.id.includes('Js'))) {
     size -= 10 // Coin select fee calculation is off by 10 bytes as it does not consider pay to script
   }
-  const maxFeePerByte = (expectedFeePerByte * (size + 2)) / size // https://github.com/bitcoin/bitcoin/blob/362f9c60a54e673bb3daa8996f86d4bc7547eb13/test/functional/test_framework/util.py#L40
+  const maxFeePerByte = (expectedFeePerByte * (size + 2)) / size // https://github.com/wagerr/wagerr/blob/362f9c60a54e673bb3daa8996f86d4bc7547eb13/test/functional/test_framework/util.py#L40
   const feePerByte = BigNumber(fee).div(size).toNumber()
 
   expect(feePerByte).gte(expectedFeePerByte)
@@ -314,10 +314,10 @@ async function expectBitcoinFee (chain, txHash, expectedFeePerByte, payToScript)
 }
 
 // A dumber fee calculation that is used in swap redeems - 1 in 1 out - legacy tx/inputs assumed
-async function expectBitcoinSwapRedeemFee (chain, txHash, expectedFeePerByte) {
+async function expectWagerrSwapRedeemFee (chain, txHash, expectedFeePerByte) {
   const tx = await chain.client.chain.getTransactionByHash(txHash)
-  const fee = await getBitcoinTransactionFee(chain, tx)
-  const expectedFee = providers.bitcoin.BitcoinUtils.calculateFee(1, 1, expectedFeePerByte)
+  const fee = await getWagerrTransactionFee(chain, tx)
+  const expectedFee = providers.wagerr.WagerrUtils.calculateFee(1, 1, expectedFeePerByte)
 
   expect(fee).to.equal(expectedFee)
 }
@@ -397,8 +397,8 @@ export {
   chains,
   getNewAddress,
   getRandomAddress,
-  getRandomBitcoinAddress,
-  importBitcoinAddresses,
+  getRandomWagerrAddress,
+  importWagerrAddresses,
   fundAddress,
   fundWallet,
   metaMaskConnector,

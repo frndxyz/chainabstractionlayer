@@ -1,7 +1,7 @@
 import { isArray, isBoolean, isNumber, isString, isObject } from 'lodash'
 import { BigNumber } from 'bignumber.js'
 
-import { InvalidProviderResponseError } from '@liquality/errors'
+import { InvalidProviderResponseError } from '@wagerr-wdk/errors'
 
 export default class Chain {
   /**

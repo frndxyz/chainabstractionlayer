@@ -1,7 +1,7 @@
 import { isNumber, isString } from 'lodash'
 
-import { sha256 } from '@liquality/crypto'
-import { UnimplementedMethodError } from '@liquality/errors'
+import { sha256 } from '@wagerr-wdk/crypto'
+import { UnimplementedMethodError } from '@wagerr-wdk/errors'
 
 export default class Swap {
   constructor (client) {

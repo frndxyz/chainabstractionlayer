@@ -1,0 +1,68 @@
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="../../../packages/bundle/dist/bundle.min.js"></script>
+</head>
+<body>
+  <h1>CAL + Ledger: Send transaction (Wagerr)</h1>
+  <p>From: <span id="address"></span></p>
+  <p>Balance: <span id="balance"></span></p>
+  <p>New address: <span id="newAddress"></span></p>
+
+  <hr />
+  <h3>Pay to address</h3>
+  <p>To: <input type="text" id="toAddress"/></p>
+  <p>Value: <input type="text" id="addrValue" value="0"/></p>
+  <p><button id="sendAddr">Send</button></p>
+
+  <hr />
+  <h3>Pay to custom script</h3>
+  <p>Script: <input type="text" id="toScript"/></p>
+  <p>Value: <input type="text" id="scriptValue" value="0"/></p>
+  <p><button id="sendScript">Send</button></p>
+
+  <hr />
+  <p>Result: <span id="result"></span></p>
+  <p><code>For errors and logs, check console</code></p>
+
+  <script>
+/* global $, Bundle */
+const { Client, providers } = Bundle
+const networks = providers.wagerr.networks
+const wagerr = new Client()
+wagerr.addProvider(new providers.wagerr.WagerrRpcProvider('https://localhost:18443', 'wagerr', 'local321'))
+wagerr.addProvider(new providers.wagerr.WagerrLedgerProvider({ network: networks.wagerr_testnet }))
+
+let addresses, balance, newAddress
+wagerr.wallet.getUsedAddresses().then(usedAddrs => {
+  addresses = usedAddrs
+  $('#address').text(addresses.join(', '))
+
+  wagerr.chain.getBalance(addresses).then(blnce => {
+    balance = blnce
+    $('#balance').text(balance)
+  })
+
+  wagerr.wallet.getUnusedAddress().then(unusedAddrs => {
+    newAddress = unusedAddrs
+    $('#newAddress').text(newAddress)
+  })
+
+  $('#sendAddr').click(() => {
+    // pay to address:
+    // to, value
+    wagerr.chain.sendTransaction($('#toAddress').val(), parseInt($('#addrValue').val())).then(result => {
+      $('#result').text(JSON.stringify(result, null, 2))
+    })
+  })
+  $('#sendScript').click(() => {
+    // pay to script:
+    // null, value, script
+    wagerr.chain.sendTransaction(null, parseInt($('#scriptValue').val()), $('#toScript').val()).then(result => {
+      $('#result').text(JSON.stringify(result, null, 2))
+    })
+  })
+})
+  </script>
+</body>
+</html>

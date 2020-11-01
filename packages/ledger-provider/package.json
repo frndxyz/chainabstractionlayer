@@ -1,5 +1,5 @@
 {
-  "name": "@liquality/ledger-provider",
+  "name": "@wagerr-wdk/ledger-provider",
   "umdName": "LedgerProvider",
   "umdExport": "default",
   "version": "0.6.2",
@@ -27,20 +27,20 @@
     "@ledgerhq/hw-transport-u2f": "^4.56.0",
     "@ledgerhq/hw-transport-web-ble": "^4.56.0",
     "@ledgerhq/hw-transport-webusb": "^4.56.0",
-    "@liquality/debug": "^0.6.2",
-    "@liquality/errors": "^0.6.2",
-    "@liquality/wallet-provider": "^0.6.2"
+    "@wagerr-wdk/debug": "^0.6.2",
+    "@wagerr-wdk/errors": "^0.6.2",
+    "@wagerr-wdk/wallet-provider": "^0.6.2"
   },
   "engines": {
     "node": "~8.12.0"
   },
-  "homepage": "https://github.com/liquality/chainabstractionlayer#readme",
+  "homepage": "https://github.com/wagerr/chainabstractionlayer#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/liquality/chainabstractionlayer.git"
+    "url": "git+https://github.com/wagerr/chainabstractionlayer.git"
   },
   "bugs": {
-    "url": "https://github.com/liquality/chainabstractionlayer/issues"
+    "url": "https://github.com/wagerr/chainabstractionlayer/issues"
   },
   "publishConfig": {
     "access": "public"

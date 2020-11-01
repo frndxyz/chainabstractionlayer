@@ -1,6 +1,6 @@
-import WalletProvider from '@liquality/wallet-provider'
-import { WalletError } from '@liquality/errors'
-import Debug from '@liquality/debug'
+import WalletProvider from '@wagerr-wdk/wallet-provider'
+import { WalletError } from '@wagerr-wdk/errors'
+import Debug from '@wagerr-wdk/debug'
 
 import getTransport from './LedgerNodeTransport'
 import { version } from '../package.json'
@@ -102,7 +102,7 @@ export default class LedgerProvider extends WalletProvider {
     const exchangeTimeout = app.transport.exchangeTimeout
     app.transport.setExchangeTimeout(2000)
     try {
-      // https://ledgerhq.github.io/btchip-doc/bitcoin-technical-beta.html#_get_random
+      // https://ledgerhq.github.io/btchip-doc/wagerr-technical-beta.html#_get_random :TODO wagerr
       await this._transport.send(0xe0, 0xc0, 0x00, 0x00)
     } catch (e) {
       return false

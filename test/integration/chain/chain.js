@@ -33,15 +33,15 @@ function testGenerateBlock (chain) {
 describe('Block Numbers', function () {
   this.timeout(config.timeout)
 
-  describe('Bitcoin - Node', () => {
-    testGetBlock(chains.bitcoinWithNode)
+  describe('Wagerr - Node', () => {
+    testGetBlock(chains.wagerrWithNode)
   })
 })
 
 describe('Block Generate', function () {
   this.timeout(config.timeout)
 
-  describe('Bitcoin - Node', () => {
-    testGenerateBlock(chains.bitcoinWithNode)
+  describe('Wagerr - Node', () => {
+    testGenerateBlock(chains.wagerrWithNode)
   })
 })

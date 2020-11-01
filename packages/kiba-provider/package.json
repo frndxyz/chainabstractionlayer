@@ -1,5 +1,5 @@
 {
-  "name": "@liquality/kiba-provider",
+  "name": "@wagerr-wdk/kiba-provider",
   "umdName": "KibaProvider",
   "umdExport": "default",
   "version": "0.6.2",
@@ -19,19 +19,19 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.4.3",
-    "@liquality/provider": "^0.6.2",
+    "@wagerr-wdk/provider": "^0.6.2",
     "core-connection": "0.0.12"
   },
   "engines": {
     "node": "~8.12.0"
   },
-  "homepage": "https://github.com/liquality/chainabstractionlayer#readme",
+  "homepage": "https://github.com/wagerr/chainabstractionlayer#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/liquality/chainabstractionlayer.git"
+    "url": "git+https://github.com/wagerr/chainabstractionlayer.git"
   },
   "bugs": {
-    "url": "https://github.com/liquality/chainabstractionlayer/issues"
+    "url": "https://github.com/wagerr/chainabstractionlayer/issues"
   },
   "publishConfig": {
     "access": "public"

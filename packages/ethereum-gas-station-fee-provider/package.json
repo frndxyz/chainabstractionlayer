@@ -1,5 +1,5 @@
 {
-  "name": "@liquality/ethereum-gas-station-fee-provider",
+  "name": "@wagerr-wdk/ethereum-gas-station-fee-provider",
   "umdName": "EthereumGasStationFeeProvider",
   "umdExport": "default",
   "version": "0.6.2",
@@ -19,20 +19,20 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.4.3",
-    "@liquality/provider": "^0.6.2",
+    "@wagerr-wdk/provider": "^0.6.2",
     "axios": "^0.19.2",
     "bignumber.js": "^9.0.0"
   },
   "engines": {
     "node": "~8.12.0"
   },
-  "homepage": "https://github.com/liquality/chainabstractionlayer#readme",
+  "homepage": "https://github.com/wagerr/chainabstractionlayer#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/liquality/chainabstractionlayer.git"
+    "url": "git+https://github.com/wagerr/chainabstractionlayer.git"
   },
   "bugs": {
-    "url": "https://github.com/liquality/chainabstractionlayer/issues"
+    "url": "https://github.com/wagerr/chainabstractionlayer/issues"
   },
   "publishConfig": {
     "access": "public"

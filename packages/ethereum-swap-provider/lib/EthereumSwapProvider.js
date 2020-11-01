@@ -1,7 +1,7 @@
-import Provider from '@liquality/provider'
-import { padHexStart } from '@liquality/crypto'
-import { addressToString } from '@liquality/utils'
-import { remove0x } from '@liquality/ethereum-utils'
+import Provider from '@wagerr-wdk/provider'
+import { padHexStart } from '@wagerr-wdk/crypto'
+import { addressToString } from '@wagerr-wdk/utils'
+import { remove0x } from '@wagerr-wdk/ethereum-utils'
 
 import { version } from '../package.json'
 

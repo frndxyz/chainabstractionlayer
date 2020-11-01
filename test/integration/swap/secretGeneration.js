@@ -12,10 +12,10 @@ chai.use(chaiAsPromised)
 describe('Secret generation', function () {
   this.timeout(config.timeout)
   describe('Secret is the same when generated multiple times', () => {
-    it('Bitcoin Node', async () => {
+    it('Wagerr Node', async () => {
       const message = 'message'
-      const secret1 = await chains.bitcoinWithNode.client.swap.generateSecret(message)
-      const secret2 = await chains.bitcoinWithNode.client.swap.generateSecret(message)
+      const secret1 = await chains.wagerrWithNode.client.swap.generateSecret(message)
+      const secret2 = await chains.wagerrWithNode.client.swap.generateSecret(message)
       expect(secret1).to.be.equal(secret2)
     })
   })
@@ -24,7 +24,7 @@ describe('Secret generation', function () {
     it('Secrets with same message differ on different wallets', async () => {
       const message = 'message'
       const ethSecret = await chains.ethereumWithNode.client.swap.generateSecret(message)
-      const btcSecret = await chains.bitcoinWithNode.client.swap.generateSecret(message)
+      const btcSecret = await chains.wagerrWithNode.client.swap.generateSecret(message)
       expect(ethSecret).to.not.be.equal(btcSecret)
     })
   })
@@ -35,7 +35,7 @@ describe('Secret generation', function () {
       await metaMaskConnector.start()
       const message = 'message'
       const ethSecret = await chains.ethereumWithMetaMask.client.swap.generateSecret(message)
-      const btcSecret = await chains.bitcoinWithLedger.client.swap.generateSecret(message)
+      const btcSecret = await chains.wagerrWithLedger.client.swap.generateSecret(message)
       expect(ethSecret).to.not.be.equal(btcSecret)
       return metaMaskConnector.stop()
     })
