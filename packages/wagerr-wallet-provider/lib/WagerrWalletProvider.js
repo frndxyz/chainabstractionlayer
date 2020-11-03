@@ -316,7 +316,7 @@ export default superclass => class WagerrWalletProvider extends superclass {
 
       const outputBalance = _targets.reduce((a, b) => a + (b['value'] || 0), 0)
 
-      const amountToSend = utxoBalance - (feePerByte * (((_targets.length + 1) * 40) + (utxos.length * 155))) // todo better calculation
+      const amountToSend = utxoBalance - (feePerByte * (((_targets.length + 1) * 39) + (utxos.length * 153))) // todo better calculation
 
       let targets = _targets.map((target, i) => ({ id: 'main', value: target.value }))
       targets.push({ id: 'main', value: amountToSend - outputBalance })
@@ -353,7 +353,7 @@ export default superclass => class WagerrWalletProvider extends superclass {
       addressIndex += numAddressPerCall
     }
 
-    throw new Error('Not enough balance')
+    throw new Error('Not enough balance: getInputsForSweep')
   }
 
   async getInputsForAmount (_targets, _feePerByte, fixedInputs = [], numAddressPerCall = 100) {
@@ -446,6 +446,6 @@ export default superclass => class WagerrWalletProvider extends superclass {
       addressIndex += numAddressPerCall
     }
 
-    throw new Error('Not enough balance')
+    throw new Error('Not enough balance: getInputsForAmount')
   }
 }
