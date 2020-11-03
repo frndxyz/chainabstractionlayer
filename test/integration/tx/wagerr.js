@@ -47,7 +47,7 @@ function testSweepTransaction (chain) {
 
      let sendTxChain
      if (bal === 0) {
-       sendTxChain = chains.bitcoinWithNode
+       sendTxChain = chains.wagerrWithNode
      } else {
        sendTxChain = chain
      }
@@ -118,7 +118,7 @@ function testSweepTransaction (chain) {
 
      let sendTxChain
      if (bal === 0) {
-       sendTxChain = chains.bitcoinWithNode
+       sendTxChain = chains.wagerrWithNode
      } else {
        sendTxChain = chain
      }
