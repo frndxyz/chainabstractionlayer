@@ -27,6 +27,7 @@ export default superclass => class WagerrWalletProvider extends superclass {
     this._baseDerivationPath = baseDerivationPath
     this._network = network
     this._addressType = addressType
+    this._addressesCache = {}
   }
 
   async buildTransaction (to, value, data, feePerByte) {
@@ -55,10 +56,23 @@ export default superclass => class WagerrWalletProvider extends superclass {
     const txHash = typeof tx === 'string' ? tx : tx.hash
     const transaction = (await this.getMethod('getTransactionByHash')(txHash))._raw
     const fixedInputs = [transaction.vin[0]] // TODO: should this pick more than 1 input? RBF doesn't mandate it
-    const changeAddresses = (await this.getAddresses(0, 1000, true)).map(a => a.address)
-    const nonChangeOutputs = transaction.vout.filter(vout => !changeAddresses.includes(vout.scriptPubKey.addresses[0]))
+    
+    const addressesPerCall = 50
+     let changeOutput
+     let index = 0
+     while (index < 1000 && !changeOutput) {
+       const changeAddresses = (await this.getAddresses(index, addressesPerCall, true)).map(a => a.address)
+       changeOutput = transaction.vout.find(vout => changeAddresses.includes(vout.scriptPubKey.addresses[0]))
+       index += addressesPerCall
+     }
+
+     let outputs = transaction.vout
+     if (changeOutput) {
+       outputs = outputs.filter(vout => vout.scriptPubKey.addresses[0] !== changeOutput.scriptPubKey.addresses[0])
+     }
+     
     // TODO more checks?
-    const transactions = nonChangeOutputs.map(output =>
+    const transactions = outputs.map(output =>
       ({ to: output.scriptPubKey.addresses[0], value: BigNumber(output.value).times(1e8).toNumber() })
     )
     const { hex, fee } = await this._buildTransaction(transactions, newFeePerByte, fixedInputs)
@@ -125,16 +139,24 @@ export default superclass => class WagerrWalletProvider extends superclass {
 
     for (let currentIndex = startingIndex; currentIndex < lastIndex; currentIndex++) {
       const subPath = changeVal + '/' + currentIndex
-      const publicKey = baseDerivationNode.derivePath(subPath).publicKey
       const path = this._baseDerivationPath + '/' + subPath
-      const address = this.getAddressFromPublicKey(publicKey)
+      
+      if (path in this._addressesCache) {
+        addresses.push(this._addressesCache[path])
+        continue
+      }
 
-      addresses.push(new Address({
+      const publicKey = baseDerivationNode.derivePath(subPath).publicKey
+      const address = this.getAddressFromPublicKey(publicKey)
+      const addressObject = new Address({
         address,
         publicKey,
         derivationPath: path,
         index: currentIndex
-      }))
+      })
+
+      this._addressesCache[path] = addressObject
+      addresses.push(addressObject)
 
       await asyncSetImmediate()
     }
