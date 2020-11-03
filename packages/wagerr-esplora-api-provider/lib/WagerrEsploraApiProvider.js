@@ -112,24 +112,7 @@ export default class WagerrEsploraApiProvider extends Provider {
     return normalizeTransactionObject(decodedTx, /* tx.fee */ 0.00014, { hash: tx.blockHash, number: tx.blockHeight })
   }
 
-  async getBlockTransactions (blockHash) {
-    let transactions = []
-    const currentHeight = await this.getBlockHeight()
-    try {
-      const response = await this._axios.get(`/getblocktransactions?blockhash=${blockHash}`)
-      const data = response.data
-      const txs = data.txs
-      if (isArray(txs)) {
-        transactions = transactions.concat(txs.map(tx => this.formatTransaction(tx, currentHeight)))
-      }
-    } catch (e) {
-      throw e
-    }
-
-    return transactions
-  }
-
-  async getBlockByHash (blockHash, includeTx = false) {
+  async getBlockByHash (blockHash) {
     const response = await this._axios.get(`/getblockbyhash?hash=${blockHash}`)
     const data = response.data
     const {
@@ -140,10 +123,7 @@ export default class WagerrEsploraApiProvider extends Provider {
       size,
       previousblockhash: parentHash,
       nonce
-      // confirmations
     } = data
-
-    let transactions = await this.getBlockTransactions(blockHash)
 
     return {
       hash,
@@ -151,8 +131,7 @@ export default class WagerrEsploraApiProvider extends Provider {
       timestamp,
       size,
       parentHash,
-      nonce,
-      transactions
+      nonce
     }
   }
 
@@ -161,8 +140,8 @@ export default class WagerrEsploraApiProvider extends Provider {
     return response.data
   }
 
-  async getBlockByNumber (blockNumber, includeTx) {
-    return this.getBlockByHash(await this.getBlockHash(blockNumber), includeTx)
+  async getBlockByNumber (blockNumber) {
+    return this.getBlockByHash(await this.getBlockHash(blockNumber))
   }
 
   async getBlockHeight () {
