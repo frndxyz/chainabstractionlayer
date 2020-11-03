@@ -55,15 +55,13 @@ export default class WagerrEsploraApiProvider extends Provider {
 
   async _getUnspentTransactions (addresses) {
     const response = await this._axios.get(`/custom/getunspenttransactions/${addresses}`)
-    const currentHeight = await this.getBlockHeight()
     return response.data.map(utxo => ({
       txid: utxo.txId,
       vout: utxo.n,
       blockHeight: utxo.blockHeight,
       address: addressToString(utxo.address),
       satoshis: utxo.satoshi,
-      amount: BigNumber(utxo.satoshi).dividedBy(1e8).toNumber(),
-      confirmations: (currentHeight - utxo.blockHeight) + 1
+      amount: BigNumber(utxo.satoshi).dividedBy(1e8).toNumber()
     }))
   }
 
