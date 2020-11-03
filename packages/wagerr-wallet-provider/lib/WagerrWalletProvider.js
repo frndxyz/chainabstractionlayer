@@ -1,6 +1,6 @@
 import { AddressTypes, selectCoins, normalizeTransactionObject, decodeRawTransaction } from '@wagerr-wdk/wagerr-utils'
 import * as wagerr from '@wagerr-wdk/wagerrjs-lib'
-import { Address, addressToString } from '@wagerr-wdk/utils'
+import { Address, addressToString, asyncSetImmediate } from '@wagerr-wdk/utils'
 import { BigNumber } from 'bignumber.js'
 
 const ADDRESS_GAP = 20
@@ -135,6 +135,8 @@ export default superclass => class WagerrWalletProvider extends superclass {
         derivationPath: path,
         index: currentIndex
       }))
+
+      await asyncSetImmediate()
     }
 
     return addresses
