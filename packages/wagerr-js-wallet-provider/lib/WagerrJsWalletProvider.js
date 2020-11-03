@@ -94,7 +94,7 @@ export default class WagerrJsWalletProvider extends WagerrWalletProvider(WalletP
     return { hex: txb.build().toHex(), fee }
   }
 
-  async _buildSweepTransaction (externalChangeAddress, _outputs = [], feePerByte, fixedInputs) {
+  async _buildSweepTransaction (externalChangeAddress, feePerByte, _outputs = [], fixedInputs) {
     let _feePerByte = feePerByte || false
     if (_feePerByte === false) _feePerByte = await this.getMethod('getFeePerByte')()
 
@@ -116,7 +116,7 @@ export default class WagerrJsWalletProvider extends WagerrWalletProvider(WalletP
 
     return this._buildTransaction(_outputs, feePerByte, inputs)
   }
-  
+
   async signP2SHTransaction (inputTxHex, tx, address, prevout, outputScript, lockTime = 0, segwit = false) {
     const wallet = await this.getWalletAddress(address)
     const keyPair = await this.keyPair(wallet.derivationPath)
