@@ -1,4 +1,3 @@
-apk add curl curl-dev
 
 sleep 10 # Wait for wallet to load
 
