@@ -163,7 +163,7 @@ export default class WagerrSwapProvider extends Provider {
       tx.toHex(),
       address,
       swapVout.n,
-      (isSegwit ? swapPaymentVariants.p2wsh.redeem.output: swapPaymentVariants.p2sh.redeem.output).toString('hex'),
+      (isSegwit ? swapPaymentVariants.p2wsh.redeem.output : swapPaymentVariants.p2sh.redeem.output).toString('hex'),
       isRedeem ? 0 : expiration,
       isSegwit
     )
