@@ -20,7 +20,8 @@
   "dependencies": {
     "@babel/runtime": "^7.4.3",
     "@wagerr-wdk/provider": "^0.6.2",
-    "core-connection": "0.0.12"
+    "core-connection": "0.0.12",
+    "lodash": "^4.17.20"
   },
   "engines": {
     "node": "~8.12.0"

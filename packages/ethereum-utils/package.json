@@ -22,7 +22,7 @@
     "@wagerr-wdk/schema": "^0.6.2",
     "@wagerr-wdk/utils": "^0.6.2",
     "eip55": "^1.0.3",
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.20"
   },
   "engines": {
     "node": "~8.12.0"
