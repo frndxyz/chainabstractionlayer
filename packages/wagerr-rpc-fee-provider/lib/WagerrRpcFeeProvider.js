@@ -1,4 +1,3 @@
-
 import Provider from '@wagerr-wdk/provider'
 import _ from 'lodash'
 
