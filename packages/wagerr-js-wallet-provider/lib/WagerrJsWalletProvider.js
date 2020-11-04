@@ -112,20 +112,23 @@ export default class WagerrJsWalletProvider extends WagerrWalletProvider(WalletP
     return this._buildTransaction(_outputs, feePerByte, inputs)
   }
 
-  async signP2SHTransaction (inputTxHex, tx, address, prevout, outputScript, lockTime = 0, segwit = false) {
+  async signP2SHTransaction (inputTxHex, txHex, address, vout, outputScript, lockTime = 0, segwit = false) {
     const wallet = await this.getWalletAddress(address)
     const keyPair = await this.keyPair(wallet.derivationPath)
+
+    const inputTx = wagerr.Transaction.fromHex(inputTxHex)
+     const tx = wagerr.Transaction.fromHex(txHex)
 
     let sigHash
 
     if (segwit) {
-      sigHash = tx.hashForWitnessV0(0, outputScript, prevout.vSat, wagerr.Transaction.SIGHASH_ALL) // AMOUNT NEEDS TO BE PREVOUT AMOUNT
+      sigHash = tx.hashForWitnessV0(0, Buffer.from(outputScript, 'hex'), inputTx.outs[vout].value, wagerr.Transaction.SIGHASH_ALL) // AMOUNT NEEDS TO BE PREVOUT AMOUNT
     } else {
-      sigHash = tx.hashForSignature(0, outputScript, wagerr.Transaction.SIGHASH_ALL)
+      sigHash = tx.hashForSignature(0, Buffer.from(outputScript, 'hex'), wagerr.Transaction.SIGHASH_ALL)
     }
 
     const sig = wagerr.script.signature.encode(keyPair.sign(sigHash), wagerr.Transaction.SIGHASH_ALL)
-    return sig
+    return sig.toString('hex')
   }
 
   // inputs consists of [{ inputTxHex, index, vout, outputScript }]
