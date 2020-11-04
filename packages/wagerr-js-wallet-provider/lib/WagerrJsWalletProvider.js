@@ -101,7 +101,7 @@ export default class WagerrJsWalletProvider extends WagerrWalletProvider(WalletP
     const { inputs, outputs, change } = await this.getInputsForAmount([], _feePerByte, [], 100, true)
 
     if (change) {
-      throw Error('There should not be any change for sweeping transaction')
+      throw new Error('There should not be any change for sweeping transaction')
     }
 
     const _outputs = [{

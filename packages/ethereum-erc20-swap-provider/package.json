@@ -20,6 +20,7 @@
   "dependencies": {
     "@babel/runtime": "^7.4.3",
     "@wagerr-wdk/crypto": "^0.6.2",
+    "@wagerr-wdk/errors": "^0.6.2",
     "@wagerr-wdk/ethereum-utils": "^0.6.2",
     "@wagerr-wdk/provider": "^0.6.2",
     "@wagerr-wdk/utils": "^0.6.2",

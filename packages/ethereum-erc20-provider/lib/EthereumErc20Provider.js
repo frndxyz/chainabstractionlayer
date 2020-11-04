@@ -7,6 +7,7 @@ import {
   ensure0x,
   remove0x
 } from '@wagerr-wdk/ethereum-utils'
+import { InvalidDestinationAddressError } from '@wagerr-wdk/errors'
 import { addressToString } from '@wagerr-wdk/utils'
 
 import { version } from '../package.json'
@@ -20,9 +21,10 @@ export default class EthereumErc20Provider extends Provider {
     this._contractAddress = remove0x(contractAddress)
   }
 
-  async assertContractExists () {
-    const code = await this.getMethod('getCode')(this._contractAddress, 'latest')
-    if (code === '') throw new Error(`Contract does not exist at given address: ${this._contractAddress}`)
+  async assertContractExists (address) {
+    if (!address) address = this._contractAddress
+    const code = await this.getMethod('getCode')(address, 'latest')
+    if (code === '') throw new InvalidDestinationAddressError(`Contract does not exist at given address: ${address}`)
   }
 
   generateErc20Transfer (to, value) {
