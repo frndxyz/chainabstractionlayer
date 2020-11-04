@@ -5,7 +5,7 @@ import chaiAsPromised from 'chai-as-promised'
 import * as wagerr from '@wagerr-wdk/wagerrjs-lib'
 import BigNumber from 'bignumber.js'
 import { hash160 } from '../../../packages/crypto/lib'
-import { calculateFee } from '../../../packages/wagerr-utils/lib'
+import * as WagerrUtils from '../../../packages/wagerr-utils/lib'
 import { addressToString } from '../../../packages/utils/lib'
 import { chains, importWagerrAddresses, getNewAddress, getRandomWagerrAddress, mineBlock, fundWallet, describeExternal } from '../common'
 import { testTransaction } from './common'
@@ -113,7 +113,7 @@ function testSignP2SHTransaction (chain) {
     }
 
     const txb = new wagerr.TransactionBuilder(network)
-    const txfee = calculateFee(3, 3, 9)
+    const txfee = WagerrUtils.calculateFee(3, 3, 9)
 
     multiOne.multiVout.vSat = value
 
@@ -207,7 +207,7 @@ function testSignBatchP2SHTransaction (chain) {
     }
 
     const txb = new wagerr.TransactionBuilder(network)
-    const txfee = calculateFee(3, 3, 9)
+    const txfee = WagerrUtils.calculateFee(3, 3, 9)
 
     multiOne.multiVout.vSat = value
     multiTwo.multiVout.vSat = value

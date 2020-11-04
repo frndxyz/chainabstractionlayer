@@ -3,13 +3,49 @@ import chai, { expect } from 'chai'
 import chaiAsPromised from 'chai-as-promised'
 // TOOD: Connector does not work for EIP1193
 import MetaMaskConnector from 'node-metamask'
-import KibaConnector from 'node-kiba'
-import { Client, providers, crypto, errors, utils } from '../../packages/bundle/lib'
+import Client from '../../packages/client/lib'
+import * as crypto from '../../packages/crypto/lib'
+import * as errors from '../../packages/errors/lib'
+import * as utils from '../../packages/utils/lib'
+import wagerrNetworks from '../../packages/wagerr-networks/lib'
+import ethereumNetworks from '../../packages/ethereum-networks/lib'
+import WagerrLedgerProvider from '../../packages/wagerr-ledger-provider/lib'
+import WagerrSwapProvider from '../../packages/wagerr-swap-provider/lib'
+import WagerrNodeWalletProvider from '../../packages/wagerr-node-wallet-provider/lib'
+import WagerrJsWalletProvider from '../../packages/wagerr-js-wallet-provider/lib'
+import WagerrRpcProvider from '../../packages/wagerr-rpc-provider/lib'
+import * as WagerrUtils from '../../packages/wagerr-utils/lib'
+import EthereumRpcProvider from '../../packages/ethereum-rpc-provider/lib'
+import EthereumWalletApiProvider from '../../packages/ethereum-wallet-api-provider/lib'
+import EthereumSwapProvider from '../../packages/ethereum-swap-provider/lib'
+import EthereumLedgerProvider from '../../packages/ethereum-ledger-provider/lib'
+import EthereumJsWalletProvider from '../../packages/ethereum-js-wallet-provider/lib'
+import EthereumErc20Provider from '../../packages/ethereum-erc20-provider/lib'
+import EthereumErc20SwapProvider from '../../packages/ethereum-erc20-swap-provider/lib'
 import { findLast } from '../../packages/ethereum-wallet-api-provider/dist/node_modules/lodash'
 import { generateMnemonic } from 'bip39'
 import config from './config'
-import testnetConfig from './testnetConfig'
 import BigNumber from 'bignumber.js'
+
+const providers = {
+  wagerr: {
+    WagerrRpcProvider,
+    WagerrLedgerProvider,
+    WagerrSwapProvider,
+    WagerrNodeWalletProvider,
+    WagerrJsWalletProvider,
+    WagerrUtils
+  },
+  ethereum: {
+    EthereumRpcProvider,
+    EthereumWalletApiProvider,
+    EthereumSwapProvider,
+    EthereumLedgerProvider,
+    EthereumJsWalletProvider,
+    EthereumErc20Provider,
+    EthereumErc20SwapProvider
+  }
+}
 
 const sleep = utils.sleep
 
@@ -26,9 +62,6 @@ const CONSTANTS = {
 console.warn = () => {} // Silence warnings
 
 const metaMaskConnector = new MetaMaskConnector({ port: config.ethereum.metaMaskConnector.port })
-const kibaConnector = new KibaConnector({ port: config.wagerr.kibaConnector.port })
-
-const wagerrNetworks = providers.wagerr.networks
 const wagerrNetwork = wagerrNetworks[config.wagerr.network]
 
 function mockedWagerrRpcProvider () {
@@ -53,17 +86,6 @@ wagerrWithJs.addProvider(mockedWagerrRpcProvider())
 wagerrWithJs.addProvider(new providers.wagerr.WagerrJsWalletProvider(wagerrNetwork, generateMnemonic(256), 'bech32'))
 wagerrWithJs.addProvider(new providers.wagerr.WagerrSwapProvider(wagerrNetwork, 'p2wsh'))
 
-// To run wagerrWithKiba tests create a testnetConfig.js with testnetHost, testnetUsername, testnetConfig, testnetApi, testnetNetwork
-const wagerrWithKiba = new Client()
-wagerrWithKiba.addProvider(new providers.wagerr.WagerrRpcProvider(testnetConfig.wagerr.rpc.testnetHost, testnetConfig.wagerr.rpc.testnetUsername, testnetConfig.wagerr.rpc.testnetPassword))
-wagerrWithKiba.addProvider(new providers.wagerr.WagerrEsploraApiProvider(testnetConfig.wagerr.rpc.testnetApi))
-wagerrWithKiba.addProvider(new providers.wagerr.WagerrKibaProvider(kibaConnector.getProvider(), wagerrNetworks[testnetConfig.wagerr.testnetNetwork]))
-
-const wagerrWithEsplora = new Client()
-wagerrWithEsplora.addProvider(new providers.wagerr.WagerrEsploraApiProvider('https://blockstream.info/testnet/api'))
-wagerrWithEsplora.addProvider(new providers.wagerr.WagerrJsWalletProvider(wagerrNetworks.wagerr_testnet, generateMnemonic(256), 'bech32'))
-
-const ethereumNetworks = providers.ethereum.networks
 const ethereumNetwork = {
   ...ethereumNetworks[config.ethereum.network],
   name: 'mainnet',
@@ -117,8 +139,6 @@ const chains = {
   wagerrWithLedger: { id: 'Wagerr Ledger', name: 'wagerr', client: wagerrWithLedger, network: wagerrNetwork },
   wagerrWithNode: { id: 'Wagerr Node', name: 'wagerr', client: wagerrWithNode, network: wagerrNetwork, segwitFeeImplemented: true },
   wagerrWithJs: { id: 'Wagerr Js', name: 'wagerr', client: wagerrWithJs, network: wagerrNetwork },
-  wagerrWithKiba: { id: 'Wagerr Kiba', name: 'wagerr', client: wagerrWithKiba, network: wagerrNetworks['wagerr_testnet'] },
-  wagerrWithEsplora: { id: 'Wagerr Esplora', name: 'wagerr', client: wagerrWithEsplora },
   ethereumWithMetaMask: { id: 'Ethereum MetaMask', name: 'ethereum', client: ethereumWithMetaMask },
   ethereumWithNode: { id: 'Ethereum Node', name: 'ethereum', client: ethereumWithNode },
   ethereumWithLedger: { id: 'Ethereum Ledger', name: 'ethereum', client: ethereumWithLedger },
@@ -355,14 +375,6 @@ function connectMetaMask () {
   after(async () => metaMaskConnector.stop())
 }
 
-function connectKiba () {
-  before(async () => {
-    console.log('\x1b[36m', 'Starting Kiba connector on http://localhost:3334 - Open in browser to continue', '\x1b[0m')
-    await kibaConnector.start()
-  })
-  after(async () => kibaConnector.stop())
-}
-
 async function withInternalSendMineHook (chain, provider, func) {
   let originalSendTransaction = provider.sendTransaction
   provider.sendTransaction = async (to, value, data, gasPrice) => {
@@ -404,7 +416,6 @@ export {
   fundAddress,
   fundWallet,
   metaMaskConnector,
-  kibaConnector,
   initiateAndVerify,
   claimAndVerify,
   refundAndVerify,
@@ -417,6 +428,5 @@ export {
   mineBlock,
   deployERC20Token,
   connectMetaMask,
-  connectKiba,
   describeExternal
 }
