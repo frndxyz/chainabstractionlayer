@@ -25,7 +25,7 @@ export default class EthereumScraperSwapFindProvider extends Provider {
     return normalizedTx
   }
 
-  async findAddressTransaction (address, predicate) {
+  async findAddressTransaction (address, predicate, fromBlock, toBlock, limit = 250, sort = 'desc') {
     address = ensure0x(addressToString(address))
 
     const limit = 250
@@ -34,7 +34,9 @@ export default class EthereumScraperSwapFindProvider extends Provider {
         params: {
           limit,
           page,
-          sort: 'desc'
+          sort,
+          fromBlock,
+          toBlock
         }
       })
 
