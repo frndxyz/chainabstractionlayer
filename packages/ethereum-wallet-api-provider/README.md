@@ -1,11 +1,11 @@
-# `@wagerr-wdk/metamask-provider` <img align="right" src="https://raw.githubusercontent.com/wagerr/chainabstractionlayer/master/liquality-logo.png" height="80px" />
+# `@wagerr-wdk/ethereum-wallet-api-provider` <img align="right" src="https://raw.githubusercontent.com/wagerr/chainabstractionlayer/master/liquality-logo.png" height="80px" />
 
 
 [![Build Status](https://travis-ci.com/wagerr/chainabstractionlayer.svg?branch=master)](https://travis-ci.com/wagerr/chainabstractionlayer)
 [![Coverage Status](https://coveralls.io/repos/github/wagerr/chainabstractionlayer/badge.svg?branch=master)](https://coveralls.io/github/wagerr/chainabstractionlayer?branch=master)
 [![Standard Code Style](https://img.shields.io/badge/codestyle-standard-brightgreen.svg)](https://github.com/standard/standard)
 [![MIT License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](../../LICENSE.md)
-[![@wagerr-wdk/metamask-provider](https://img.shields.io/npm/dt/@wagerr-wdk/metamask-provider.svg)](https://npmjs.com/package/@wagerr-wdk/metamask-provider)
+[![@wagerr-wdk/ethereum-wallet-api-provider](https://img.shields.io/npm/dt/@wagerr-wdk/ethereum-wallet-api-provider.svg)](https://npmjs.com/package/@wagerr-wdk/ethereum-wallet-api-provider)
 [![Gitter](https://img.shields.io/gitter/room/wagerr/Lobby.svg)](https://gitter.im/wagerr/Lobby?source=orgpage)
 [![Telegram](https://img.shields.io/badge/chat-on%20telegram-blue.svg)](https://t.me/Liquality) [![Greenkeeper badge](https://badges.greenkeeper.io/wagerr/chainabstractionlayer.svg)](https://greenkeeper.io/)
 
@@ -20,15 +20,15 @@ Query different blockchains with account management using a single and simple in
 ## Installation
 
 ```bash
-npm i @wagerr-wdk/metamask-provider
+npm i @wagerr-wdk/ethereum-wallet-api-provider
 ```
 
 or
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@wagerr-wdk/metamask-provider@0.2.3/dist/metamask-provider.min.js"></script>
-<!-- sourceMap at https://cdn.jsdelivr.net/npm/@wagerr-wdk/metamask-provider@0.2.3/dist/metamask-provider.min.js.map -->
-<!-- available as window.MetaMaskProvider -->
+<script src="https://cdn.jsdelivr.net/npm/@wagerr-wdk/ethereum-wallet-api-provider@0.2.3/dist/ethereum-wallet-api-provider.min.js"></script>
+<!-- sourceMap at https://cdn.jsdelivr.net/npm/@wagerr-wdk/ethereum-wallet-api-provider@0.2.3/dist/ethereum-wallet-api-provider.min.js.map -->
+<!-- available as window.EthereumWalletApiProvider -->
 ```
 
 

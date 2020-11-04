@@ -1,6 +1,6 @@
 {
-  "name": "@wagerr-wdk/metamask-provider",
-  "umdName": "MetaMaskProvider",
+  "name": "@wagerr-wdk/ethereum-wallet-api-provider",
+  "umdName": "EthereumWalletApiProvider",
   "umdExport": "default",
   "version": "0.6.2",
   "description": "",
@@ -21,8 +21,11 @@
     "@babel/runtime": "^7.4.3",
     "@wagerr-wdk/debug": "^0.6.2",
     "@wagerr-wdk/errors": "^0.6.2",
+    "@wagerr-wdk/ethereum-networks": "^0.6.2",
     "@wagerr-wdk/ethereum-utils": "^0.6.2",
+    "@wagerr-wdk/utils": "^0.6.2",
     "@wagerr-wdk/wallet-provider": "^0.6.2",
+    "bignumber.js": "^8.1.1",
     "lodash": "^4.17.13"
   },
   "engines": {

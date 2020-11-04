@@ -1,3 +1,3 @@
-import EthereumRpcProvider from './EthereumRpcProvider'
+import EthereumWalletApiProvider from './EthereumWalletApiProvider'
 
-export default EthereumRpcProvider
+ export default EthereumWalletApiProvider

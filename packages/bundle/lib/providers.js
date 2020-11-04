@@ -14,7 +14,7 @@ import * as WagerrUtils from '@wagerr-wdk/wagerr-utils'
 import EthereumErc20Provider from '@wagerr-wdk/ethereum-erc20-provider'
 import EthereumErc20SwapProvider from '@wagerr-wdk/ethereum-erc20-swap-provider'
 import EthereumLedgerProvider from '@wagerr-wdk/ethereum-ledger-provider'
-import EthereumMetaMaskProvider from '@wagerr-wdk/ethereum-metamask-provider'
+import EthereumWalletApiProvider from '@wagerr-wdk/ethereum-wallet-api-provider'
 import EthereumJsWalletProvider from '@wagerr-wdk/ethereum-js-wallet-provider'
 import EthereumRpcProvider from '@wagerr-wdk/ethereum-rpc-provider'
 import EthereumRpcFeeProvider from '@wagerr-wdk/ethereum-rpc-fee-provider'
@@ -46,7 +46,7 @@ const ethereum = {
   EthereumErc20Provider,
   EthereumErc20SwapProvider,
   EthereumLedgerProvider,
-  EthereumMetaMaskProvider,
+  EthereumWalletApiProvider,
   EthereumJsWalletProvider,
   EthereumRpcProvider,
   EthereumRpcFeeProvider,
