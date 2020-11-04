@@ -36,46 +36,6 @@ function testBatchTransaction (chain) {
 }
 
 function testSweepTransaction (chain) {
-  it('should sweep specific utxo', async () => {
-    await fundWallet(chains.wagerrWithJs)
-
-    const nonChangeAddresses = await chain.client.wallet.getAddresses(0, 20, false)
-    const changeAddresses = await chain.client.wallet.getAddresses(0, 20, true)
-    const addrList = nonChangeAddresses.concat(changeAddresses)
-
-    const bal = parseInt(await chain.client.chain.getBalance(addrList))
-
-     let sendTxChain
-     if (bal === 0) {
-       sendTxChain = chains.wagerrWithNode
-     } else {
-       sendTxChain = chain
-     }
-
-     await sendTxChain.client.chain.sendTransaction(changeAddresses[1], 200000000)
-     await sendTxChain.client.chain.sendTransaction(changeAddresses[2], 200000000)
-
-    let testUtxos = await chain.client.getMethod('getUnspentTransactions')([changeAddresses[1]])
-
-    testUtxos = testUtxos.map(utxo => {
-      const addr = addrList.find(a => a.equals(utxo.address))
-      return {
-        ...utxo,
-        value: BigNumber(utxo.amount).times(1e8).toNumber(),
-        derivationPath: addr.derivationPath
-      }
-    })
-
-    let fixedInputs = testUtxos
-
-    const addr1 = await getRandomWagerrAddress(chain)
-
-    await chain.client.getMethod('sendSweepTransaction')(addr1, false, [], fixedInputs)
-
-    const balanceAfter = await chain.client.chain.getBalance([changeAddresses[1]])
-     expect(balanceAfter.toString()).to.equal('0')
-  })
-
   it('should sweep wallet balance', async () => {
     await fundWallet(chains.wagerrWithJs)
 
@@ -102,38 +62,6 @@ function testSweepTransaction (chain) {
     const addr1 = await getRandomWagerrAddress(chain)
 
     await chain.client.getMethod('sendSweepTransaction')(addr1)
-
-    const balanceAfter = await chain.client.chain.getBalance(changeAddresses)
-    expect(balanceAfter.toString()).to.equal('0')
-  })
-
-  it('should sweep wallet balance and send funds to external change address', async () => {
-    await fundWallet(chain)
-
-    const nonChangeAddresses = await chain.client.wallet.getAddresses(0, 20, false)
-    const changeAddresses = await chain.client.wallet.getAddresses(0, 20, true)
-    const addrList = nonChangeAddresses.concat(changeAddresses)
-
-     const bal = parseInt(await chain.client.chain.getBalance(addrList))
-
-     let sendTxChain
-     if (bal === 0) {
-       sendTxChain = chains.wagerrWithNode
-     } else {
-       sendTxChain = chain
-     }
-
-    await sendTxChain.client.chain.sendTransaction(changeAddresses[1], 200000000)
-    await sendTxChain.client.chain.sendTransaction(changeAddresses[2], 200000000)
-    await sendTxChain.client.chain.sendTransaction(changeAddresses[3], 200000000)
-    await sendTxChain.client.chain.sendTransaction(changeAddresses[4], 200000000)
-    await sendTxChain.client.chain.sendTransaction(changeAddresses[5], 200000000)
-    await sendTxChain.client.chain.sendTransaction(changeAddresses[6], 200000000)
-
-    const addr1 = await getRandomWagerrAddress(chain)
-    const addr2 = await getRandomWagerrAddress(chain)
-
-    await chain.client.getMethod('sendSweepTransaction')(addr1, false, [{ to: addr2, value: 1000000 }])
 
     const balanceAfter = await chain.client.chain.getBalance(changeAddresses)
     expect(balanceAfter.toString()).to.equal('0')

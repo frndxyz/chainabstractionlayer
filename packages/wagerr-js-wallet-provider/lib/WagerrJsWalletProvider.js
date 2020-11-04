@@ -94,25 +94,20 @@ export default class WagerrJsWalletProvider extends WagerrWalletProvider(WalletP
     return { hex: txb.build().toHex(), fee }
   }
 
-  async _buildSweepTransaction (externalChangeAddress, feePerByte, _outputs = [], fixedInputs) {
+  async _buildSweepTransaction (externalChangeAddress, feePerByte) {
     let _feePerByte = feePerByte || false
     if (_feePerByte === false) _feePerByte = await this.getMethod('getFeePerByte')()
 
-    const { inputs, outputs, change } = await this.getInputsForAmount(_outputs, _feePerByte, fixedInputs, 100, true)
+    const { inputs, outputs, change } = await this.getInputsForAmount([], _feePerByte, [], 100, true)
 
     if (change) {
       throw Error('There should not be any change for sweeping transaction')
     }
 
-    _outputs.forEach((output, i) => {
-      const spliceIndex = outputs.findIndex((sweepOutput) => output.value === sweepOutput.value)
-      outputs.splice(spliceIndex, spliceIndex + 1)
-    })
-
-    _outputs.push({
+    const _outputs = [{
       to: externalChangeAddress,
       value: outputs[0].value
-    })
+    }]
 
     return this._buildTransaction(_outputs, feePerByte, inputs)
   }

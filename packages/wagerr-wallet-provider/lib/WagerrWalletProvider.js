@@ -53,13 +53,13 @@ export default superclass => class WagerrWalletProvider extends superclass {
     return this._sendTransaction(transactions)
   }
 
-  async buildSweepTransaction (externalChangeAddress, feePerByte, outputs, fixedInputs) {
-    return this._buildSweepTransaction(externalChangeAddress, feePerByte, outputs, fixedInputs)
+  async buildSweepTransaction (externalChangeAddress, feePerByte) {
+    return this._buildSweepTransaction(externalChangeAddress, feePerByte)
   }
 
-  async sendSweepTransaction (externalChangeAddress, feePerByte, outputs, fixedInputs) {
+  async sendSweepTransaction (externalChangeAddress, feePerByte) {
     const network = this._network
-    const { hex, fee } = await this._buildSweepTransaction(externalChangeAddress, feePerByte, outputs, fixedInputs)
+    const { hex, fee } = await this._buildSweepTransaction(externalChangeAddress, feePerByte)
     await this.getMethod('sendRawTransaction')(hex)
     return normalizeTransactionObject(decodeRawTransaction(hex, network), fee)
   }
