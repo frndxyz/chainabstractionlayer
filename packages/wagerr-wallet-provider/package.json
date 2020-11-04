@@ -22,7 +22,7 @@
     "@wagerr-wdk/provider": "^0.6.2",
     "@wagerr-wdk/utils": "^0.6.2",
     "@wagerr-wdk/wagerr-utils": "^0.6.2",
-    "@wagerr-wdk/wagerrjs-lib": "5.1.10",
+    "@wagerr-wdk/wagerrjs-lib": "5.1.11",
     "bignumber.js": "^9.0.0",
     "lodash": "^4.17.13"
   },
