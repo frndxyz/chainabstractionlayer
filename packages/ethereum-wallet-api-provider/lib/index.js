@@ -1,3 +1,3 @@
-import EthereumMetaMaskProvider from './EthereumMetaMaskProvider'
+import EthereumWalletApiProvider from './EthereumWalletApiProvider'
 
-export default EthereumMetaMaskProvider
+export default EthereumWalletApiProvider
