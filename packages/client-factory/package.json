@@ -1,0 +1,56 @@
+{
+    "name": "@wagerr-wdk/client-factory",
+    "umdName": "ClientFactory",
+    "umdExport": "default",
+    "version": "0.6.2",
+    "description": "Query different blockchains with account management using a single and simple interface.",
+    "module": "lib/index.js",
+    "main": "dist/index.cjs.js",
+    "files": [
+      "dist",
+      "lib"
+    ],
+    "scripts": {
+      "build:node": "webpack --config ../../webpack/webpack.node.config.js",
+      "build:browser": "webpack --config ../../webpack/webpack.browser.config.js",
+      "build": "webpack --config ../../webpack/webpack.config.js"
+    },
+    "author": "Liquality <info@wagerr-wdk.io>",
+    "license": "MIT",
+    "dependencies": {
+      "@babel/runtime": "^7.4.3",
+      "@wagerr-wdk/wagerr-earn-fee-provider": "^0.7.4",
+      "@wagerr-wdk/wagerr-esplora-batch-api-provider": "^0.7.4",
+      "@wagerr-wdk/wagerr-esplora-swap-find-provider": "^0.7.4",
+      "@wagerr-wdk/wagerr-js-wallet-provider": "^0.7.4",
+      "@wagerr-wdk/wagerr-networks": "^0.7.4",
+      "@wagerr-wdk/wagerr-rpc-fee-provider": "^0.7.4",
+      "@wagerr-wdk/wagerr-swap-provider": "^0.7.4",
+      "@wagerr-wdk/client": "^0.7.4",
+      "@wagerr-wdk/ethereum-erc20-provider": "^0.7.4",
+      "@wagerr-wdk/ethereum-erc20-scraper-swap-find-provider": "^0.7.4",
+      "@wagerr-wdk/ethereum-erc20-swap-provider": "^0.7.4",
+      "@wagerr-wdk/ethereum-gas-station-fee-provider": "^0.7.4",
+      "@wagerr-wdk/ethereum-js-wallet-provider": "^0.7.4",
+      "@wagerr-wdk/ethereum-networks": "^0.7.4",
+      "@wagerr-wdk/ethereum-rpc-fee-provider": "^0.7.4",
+      "@wagerr-wdk/ethereum-rpc-provider": "^0.7.4",
+      "@wagerr-wdk/ethereum-scraper-swap-find-provider": "^0.7.4",
+      "@wagerr-wdk/ethereum-swap-provider": "^0.7.4",
+      "lodash": "^4.17.20"
+    },
+    "engines": {
+      "node": "~8.12.0"
+    },
+    "homepage": "https://github.com/wagerr/chainabstractionlayer#readme",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/wagerr/chainabstractionlayer.git"
+    },
+    "bugs": {
+      "url": "https://github.com/wagerr/chainabstractionlayer/issues"
+    },
+    "publishConfig": {
+      "access": "public"
+    }
+  }
