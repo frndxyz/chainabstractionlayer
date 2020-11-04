@@ -29,7 +29,10 @@ name: test-publish
          with:
            script: |
              return context.payload.ref.includes('-next.') ? 'next' : 'latest'
-       - name: Echo tag and disttag
+       - name: Echo disttag
          run: echo ${{ steps.disttag.outputs.result }}
+       - run: export NODE_OPTIONS="--max_old_space_size=4096"
+       - run: npm ci
+       - run: npm run bootstrap
        - run: echo "//registry.npmjs.org/:_authToken=${{secrets.NPM_TOKEN}}" > ~/.npmrc
        - run: ./node_modules/.bin/lerna publish from-package --dist-tag ${{ steps.disttag.outputs.result }} --yes
