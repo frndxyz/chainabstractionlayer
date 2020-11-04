@@ -39,9 +39,10 @@ export default superclass => class WagerrWalletProvider extends superclass {
   }
 
   async _sendTransaction (transactions, feePerByte) {
+    const network = this._network
     const { hex, fee } = await this._buildTransaction(transactions, feePerByte)
     await this.getMethod('sendRawTransaction')(hex)
-    return normalizeTransactionObject(decodeRawTransaction(hex), fee)
+    return normalizeTransactionObject(decodeRawTransaction(hex, network), fee)
   }
 
   async sendTransaction (to, value, data, feePerByte) {
@@ -57,12 +58,14 @@ export default superclass => class WagerrWalletProvider extends superclass {
   }
 
   async sendSweepTransaction (externalChangeAddress, feePerByte, outputs, fixedInputs) {
+    const network = this._network
     const { hex, fee } = await this._buildSweepTransaction(externalChangeAddress, feePerByte, outputs, fixedInputs)
     await this.getMethod('sendRawTransaction')(hex)
-    return normalizeTransactionObject(decodeRawTransaction(hex), fee)
+    return normalizeTransactionObject(decodeRawTransaction(hex, network), fee)
   }
 
   async updateTransactionFee (tx, newFeePerByte) {
+    const network = this._network
     const txHash = typeof tx === 'string' ? tx : tx.hash
     const transaction = (await this.getMethod('getTransactionByHash')(txHash))._raw
     const fixedInputs = [transaction.vin[0]] // TODO: should this pick more than 1 input? RBF doesn't mandate it
@@ -88,7 +91,7 @@ export default superclass => class WagerrWalletProvider extends superclass {
     const { hex, fee } = await this._buildTransaction(transactions, newFeePerByte, fixedInputs)
 
     await this.getMethod('sendRawTransaction')(hex)
-    return normalizeTransactionObject(decodeRawTransaction(hex), fee)
+    return normalizeTransactionObject(decodeRawTransaction(hex, network), fee)
   }
 
   async getWalletAddress (address) {
@@ -261,6 +264,7 @@ export default superclass => class WagerrWalletProvider extends superclass {
   }
 
   async getInputsForAmount (_targets = [], _feePerByte, fixedInputs = [], numAddressPerCall = 100, sweep = false) {
+    const network = this._network
     let addressIndex = 0
     let changeAddresses = []
     let nonChangeAddresses = []
@@ -318,9 +322,10 @@ export default superclass => class WagerrWalletProvider extends superclass {
 
       if (fixedInputs.length) {
         for (const input of fixedInputs) {
-          const tx = await this.getMethod('getTransactionByHash')(input.txid)
-          input.value = BigNumber(tx._raw.vout[input.vout].value).times(1e8).toNumber()
-          input.address = tx._raw.vout[input.vout].scriptPubKey.addresses[0]
+          const txHex = await this.getMethod('getRawTransactionByHash')(input.txid)
+          const tx = decodeRawTransaction(txHex, network)
+          input.value = BigNumber(tx.vout[input.vout].value).times(1e8).toNumber()
+          input.address = tx.vout[input.vout].scriptPubKey.addresses[0]
           const walletAddress = await this.getWalletAddress(input.address)
           input.derivationPath = walletAddress.derivationPath
         }
