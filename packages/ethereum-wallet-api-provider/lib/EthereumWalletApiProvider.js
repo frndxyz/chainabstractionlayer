@@ -6,10 +6,10 @@ import { WalletError } from '@wagerr-wdk/errors'
 import { ensure0x, buildTransaction, formatEthResponse, normalizeTransactionObject } from '@wagerr-wdk/ethereum-utils'
 import { Address, addressToString } from '@wagerr-wdk/utils'
 import Debug from '@wagerr-wdk/debug'
-
+import { version } from '../package.json'
 const debug = Debug('ethereum')
 
-import { version } from '../package.json'
+
 
 // EIP1193
 export default class EthereumWalletApiProvider extends WalletProvider {
@@ -25,7 +25,6 @@ export default class EthereumWalletApiProvider extends WalletProvider {
     try {
       const result = await this._ethereumProvider.request({ method, params })
       debug('got success', result)
-      console.log({result})
       return formatEthResponse(result)
     } catch (e) {
       debug('got error', e.message)
@@ -82,10 +81,7 @@ export default class EthereumWalletApiProvider extends WalletProvider {
 
     const txHash = await this.request('eth_sendTransaction', tx)
 
-     return normalizeTransactionObject(formatEthResponse({
-       ...tx,
-       hash: txHash
-     }))
+    return normalizeTransactionObject(formatEthResponse({ ...tx, hash: txHash }))
   }
 
   canUpdateFee () {
