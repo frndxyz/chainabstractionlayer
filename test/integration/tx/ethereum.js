@@ -22,7 +22,7 @@ function testSweepTransaction (chain) {
     const addresses = await chain.client.wallet.getAddresses()
 
     const balAfter = await chain.client.chain.getBalance(addresses[0])
-    
+
     expect('0').to.equal(balAfter.toString())
   })
 }
@@ -81,7 +81,7 @@ describe('Transactions', function () {
       await deployERC20Token(chains.erc20WithLedger)
     })
     testTransaction(chains.erc20WithLedger)
-    })
+  })
 
   describeExternal('ERC20 - Metamask', () => {
     connectMetaMask()

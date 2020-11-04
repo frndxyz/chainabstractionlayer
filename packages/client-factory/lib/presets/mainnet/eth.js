@@ -6,31 +6,31 @@ import EthereumGasStationFeeProvider from '@wagerr-wdk/ethereum-gas-station-fee-
 import EthereumNetworks from '@wagerr-wdk/ethereum-networks'
 
 export default [
-    {
-        provider: EthereumRpcProvider,
-        optional: ['infuraProjectId'],
-        args: config => [
-            `https://mainnet.infura.io/v3/${config.infuraProjectId || '1d8f7fb6ae924886bbd1733951332eb0'}`
-        ]
-    },
-    {
-        provider: EthereumJsWalletProvider,
-        onlyIf: ['mnemonic'],
-        args: config => [
-            EthereumNetworks.mainnet,
-            config.mnemonic
-        ]
-    },
-    {
-        provider: EthereumSwapProvider
-    },
-    {
-        provider: EthereumScraperSwapFindProvider,
-        args: [
-            'https://liquality.io/eth-mainnet-api'
-        ]
-    },
-    {
-        provider: EthereumGasStationFeeProvider
-    }
+  {
+    provider: EthereumRpcProvider,
+    optional: ['infuraProjectId'],
+    args: config => [
+      `https://mainnet.infura.io/v3/${config.infuraProjectId || '1d8f7fb6ae924886bbd1733951332eb0'}`
+    ]
+  },
+  {
+    provider: EthereumJsWalletProvider,
+    onlyIf: ['mnemonic'],
+    args: config => [
+      EthereumNetworks.mainnet,
+      config.mnemonic
+    ]
+  },
+  {
+    provider: EthereumSwapProvider
+  },
+  {
+    provider: EthereumScraperSwapFindProvider,
+    args: [
+      'https://liquality.io/eth-mainnet-api'
+    ]
+  },
+  {
+    provider: EthereumGasStationFeeProvider
+  }
 ]

@@ -9,8 +9,6 @@ import Debug from '@wagerr-wdk/debug'
 import { version } from '../package.json'
 const debug = Debug('ethereum')
 
-
-
 // EIP1193
 export default class EthereumWalletApiProvider extends WalletProvider {
   constructor (ethereumProvider, network) {

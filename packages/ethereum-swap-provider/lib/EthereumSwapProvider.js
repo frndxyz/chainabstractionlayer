@@ -155,7 +155,7 @@ export default class EthereumSwapProvider extends Provider {
   async findFundSwapTransaction (initiationTxHash, value, recipientAddress, refundAddress, secretHash, expiration) {
     return this.getMethod('getTransactionByHash')(initiationTxHash)
   }
-  
+
   async getSwapSecret (claimTxHash) {
     const claimTransaction = await this.getMethod('getTransactionByHash')(claimTxHash)
     return claimTransaction._raw.input

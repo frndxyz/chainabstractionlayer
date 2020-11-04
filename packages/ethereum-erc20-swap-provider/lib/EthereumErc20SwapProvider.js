@@ -89,7 +89,7 @@ export default class EthereumErc20SwapProvider extends Provider {
   async verifyInitiateSwapTransaction (initiationTxHash, value, recipientAddress, refundAddress, secretHash, expiration) {
     const initiationTransaction = await this.getMethod('getTransactionByHash')(initiationTxHash)
     if (!initiationTransaction) throw new PendingTxError(`Initiation transaction is not available for ${initiationTxHash}`)
-    
+
     const initiationTransactionReceipt = await this.getMethod('getTransactionReceipt')(initiationTxHash)
     if (!initiationTransactionReceipt) throw new PendingTxError(`Initiation transaction receipt is not available for ${initiationTxHash}`)
 
@@ -112,16 +112,16 @@ export default class EthereumErc20SwapProvider extends Provider {
     const block = await this.getMethod('getBlockByNumber')(blockNumber, true)
     if (!block) throw new BlockNotFoundError(`Block #${blockNumber} is not available`)
 
-     return block.transactions.find(
-       transaction => this.doesTransactionMatchInitiation(
-         transaction,
-         value,
-         recipientAddress,
-         refundAddress,
-         secretHash,
-         expiration
-       )
+    return block.transactions.find(
+      transaction => this.doesTransactionMatchInitiation(
+        transaction,
+        value,
+        recipientAddress,
+        refundAddress,
+        secretHash,
+        expiration
       )
+    )
   }
 
   async findFundSwapTransaction (initiationTxHash, value, recipientAddress, refundAddress, secretHash, expiration, blockNumber) {
@@ -160,14 +160,13 @@ export default class EthereumErc20SwapProvider extends Provider {
     }
   }
 
-  
   async findRefundSwapTransaction (initiationTxHash, recipientAddress, refundAddress, secretHash, expiration, blockNumber) {
     const block = await this.getMethod('getBlockByNumber')(blockNumber, true)
     if (!block) throw new BlockNotFoundError(`Block #${blockNumber} is not available`)
 
     const initiationTransactionReceipt = await this.getMethod('getTransactionReceipt')(initiationTxHash)
     if (!initiationTransactionReceipt) throw new PendingTxError(`Initiation transaction receipt is not available for ${initiationTxHash}`)
-    
+
     const SOL_REFUND_FUNCTION_WITHOUT0X = remove0x(SOL_REFUND_FUNCTION)
     return block.transactions.find(transaction =>
       transaction._raw.to === initiationTransactionReceipt.contractAddress &&

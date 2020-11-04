@@ -1,6 +1,6 @@
 import axios from 'axios'
 import WagerrEsploraApiProvider from '@wagerr-wdk/wagerr-esplora-api-provider'
-import { flatten, uniq } from 'lodash'
+import { uniq } from 'lodash'
 import BigNumber from 'bignumber.js'
 
 import { addressToString } from '@wagerr-wdk/utils'
@@ -32,21 +32,19 @@ export default class WagerrEsploraBatchApiProvider extends WagerrEsploraApiProvi
       satoshis: utxo.satoshi,
       amount: BigNumber(utxo.satoshi).dividedBy(1e8).toNumber()
     }))
-    
   }
 
   async getAddressTransactionCounts (addresses) {
     addresses = uniq(addresses.map(addressToString))
     const addressesJoin = addresses.join(',')
     const response = await this._batchAxios.get(`/custom/getaddressesinfo/${addressesJoin}`)
-     
+
     const transactionCountsArray = Object.keys(response.data).map((addr) => {
-       return { [addr]: response[addr].tx_counts }
+      return { [addr]: response[addr].tx_counts }
     })
-  
+
     const transactionCounts = Object.assign({}, ...transactionCountsArray)
     return transactionCounts
-
   }
 }
 

@@ -66,21 +66,21 @@ export default superclass => class WagerrWalletProvider extends superclass {
     const txHash = typeof tx === 'string' ? tx : tx.hash
     const transaction = (await this.getMethod('getTransactionByHash')(txHash))._raw
     const fixedInputs = [transaction.vin[0]] // TODO: should this pick more than 1 input? RBF doesn't mandate it
-    
-    const addressesPerCall = 50
-     let changeOutput
-     let index = 0
-     while (index < 1000 && !changeOutput) {
-       const changeAddresses = (await this.getAddresses(index, addressesPerCall, true)).map(a => a.address)
-       changeOutput = transaction.vout.find(vout => changeAddresses.includes(vout.scriptPubKey.addresses[0]))
-       index += addressesPerCall
-     }
 
-     let outputs = transaction.vout
-     if (changeOutput) {
-       outputs = outputs.filter(vout => vout.scriptPubKey.addresses[0] !== changeOutput.scriptPubKey.addresses[0])
-     }
-     
+    const addressesPerCall = 50
+    let changeOutput
+    let index = 0
+    while (index < 1000 && !changeOutput) {
+      const changeAddresses = (await this.getAddresses(index, addressesPerCall, true)).map(a => a.address)
+      changeOutput = transaction.vout.find(vout => changeAddresses.includes(vout.scriptPubKey.addresses[0]))
+      index += addressesPerCall
+    }
+
+    let outputs = transaction.vout
+    if (changeOutput) {
+      outputs = outputs.filter(vout => vout.scriptPubKey.addresses[0] !== changeOutput.scriptPubKey.addresses[0])
+    }
+
     // TODO more checks?
     const transactions = outputs.map(output =>
       ({ to: output.scriptPubKey.addresses[0], value: BigNumber(output.value).times(1e8).toNumber() })
@@ -150,7 +150,7 @@ export default superclass => class WagerrWalletProvider extends superclass {
     for (let currentIndex = startingIndex; currentIndex < lastIndex; currentIndex++) {
       const subPath = changeVal + '/' + currentIndex
       const path = this._baseDerivationPath + '/' + subPath
-      
+
       if (path in this._addressesCache) {
         addresses.push(this._addressesCache[path])
         continue
@@ -261,7 +261,6 @@ export default superclass => class WagerrWalletProvider extends superclass {
   }
 
   async getInputsForAmount (_targets = [], _feePerByte, fixedInputs = [], numAddressPerCall = 100, sweep = false) {
-    const network = this._network
     let addressIndex = 0
     let changeAddresses = []
     let nonChangeAddresses = []
@@ -315,8 +314,6 @@ export default superclass => class WagerrWalletProvider extends superclass {
         throw new Error(`Fee supplied (${feePerByte} sat/b) too low. Minimum relay fee is ${minRelayFee} sat/b`)
       }
 
-      
-
       if (fixedInputs.length) {
         for (const input of fixedInputs) {
           const txHex = await this.getMethod('getRawTransactionByHash')(input.txid)
@@ -330,14 +327,14 @@ export default superclass => class WagerrWalletProvider extends superclass {
 
       let targets
       if (sweep) {
-         const outputBalance = _targets.reduce((a, b) => a + (b['value'] || 0), 0)
+        const outputBalance = _targets.reduce((a, b) => a + (b['value'] || 0), 0)
 
-         const amountToSend = utxoBalance - (feePerByte * (((_targets.length + 1) * 39) + (utxos.length * 153))) // todo better calculation
+        const amountToSend = utxoBalance - (feePerByte * (((_targets.length + 1) * 39) + (utxos.length * 153))) // todo better calculation
 
-         targets = _targets.map((target, i) => ({ id: 'main', value: target.value }))
-         targets.push({ id: 'main', value: amountToSend - outputBalance })
+        targets = _targets.map((target, i) => ({ id: 'main', value: target.value }))
+        targets.push({ id: 'main', value: amountToSend - outputBalance })
       } else {
-         targets = _targets.map((target, i) => ({ id: 'main', value: target.value }))
+        targets = _targets.map((target, i) => ({ id: 'main', value: target.value }))
       }
 
       const { inputs, outputs, fee } = selectCoins(utxos, targets, Math.ceil(feePerByte), fixedInputs)

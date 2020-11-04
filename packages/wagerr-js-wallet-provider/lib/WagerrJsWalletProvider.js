@@ -117,7 +117,7 @@ export default class WagerrJsWalletProvider extends WagerrWalletProvider(WalletP
     const keyPair = await this.keyPair(wallet.derivationPath)
 
     const inputTx = wagerr.Transaction.fromHex(inputTxHex)
-     const tx = wagerr.Transaction.fromHex(txHex)
+    const tx = wagerr.Transaction.fromHex(txHex)
 
     let sigHash
 

@@ -196,7 +196,7 @@ export default class Chain {
   async sendSweepTransaction (address, fee) {
     return this.client.getMethod('sendSweepTransaction')(address, fee)
   }
-  
+
   /**
    * Update the fee of a transaction.
    * @param {(string|Transaction)} tx - Transaction object or hash of the transaction to update

@@ -71,14 +71,14 @@ export default class Swap {
     * @return {Promise<string, TypeError>} Resolves with the funding transaction if found, otherwise null.
     *  Rejects with InvalidProviderResponseError if provider's response is invalid.
     */
-   async findFundSwapTransaction (initiationTxHash, value, recipientAddress, refundAddress, secretHash, expiration, blockNumber) {
+  async findFundSwapTransaction (initiationTxHash, value, recipientAddress, refundAddress, secretHash, expiration, blockNumber) {
     if (!(/^[A-Fa-f0-9]+$/.test(initiationTxHash))) {
       throw new TypeError('Initiation transaction hash should be a valid hex string')
     }
 
     return this.client.getMethod('findFundSwapTransaction')(initiationTxHash, value, recipientAddress, refundAddress, secretHash, expiration, blockNumber)
   }
-  
+
   /**
    * Generate a secret.
    * @param {!string} message - Message to be used for generating secret.

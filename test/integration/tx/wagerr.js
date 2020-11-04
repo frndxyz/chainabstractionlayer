@@ -3,7 +3,6 @@
 import chai, { expect } from 'chai'
 import chaiAsPromised from 'chai-as-promised'
 import * as wagerr from '@wagerr-wdk/wagerrjs-lib'
-import BigNumber from 'bignumber.js'
 import { hash160 } from '../../../packages/crypto/lib'
 import * as WagerrUtils from '../../../packages/wagerr-utils/lib'
 import { addressToString } from '../../../packages/utils/lib'
@@ -45,19 +44,19 @@ function testSweepTransaction (chain) {
 
     const bal = parseInt(await chain.client.chain.getBalance(addrList))
 
-     let sendTxChain
-     if (bal === 0) {
-       sendTxChain = chains.wagerrWithNode
-     } else {
-       sendTxChain = chain
-     }
+    let sendTxChain
+    if (bal === 0) {
+      sendTxChain = chains.wagerrWithNode
+    } else {
+      sendTxChain = chain
+    }
 
-     await sendTxChain.client.chain.sendTransaction(changeAddresses[1], 200000000)
-     await sendTxChain.client.chain.sendTransaction(changeAddresses[2], 200000000)
-     await sendTxChain.client.chain.sendTransaction(changeAddresses[3], 200000000)
-     await sendTxChain.client.chain.sendTransaction(changeAddresses[4], 200000000)
-     await sendTxChain.client.chain.sendTransaction(changeAddresses[5], 200000000)
-     await sendTxChain.client.chain.sendTransaction(changeAddresses[6], 200000000)
+    await sendTxChain.client.chain.sendTransaction(changeAddresses[1], 200000000)
+    await sendTxChain.client.chain.sendTransaction(changeAddresses[2], 200000000)
+    await sendTxChain.client.chain.sendTransaction(changeAddresses[3], 200000000)
+    await sendTxChain.client.chain.sendTransaction(changeAddresses[4], 200000000)
+    await sendTxChain.client.chain.sendTransaction(changeAddresses[5], 200000000)
+    await sendTxChain.client.chain.sendTransaction(changeAddresses[6], 200000000)
 
     const addr1 = await getRandomWagerrAddress(chain)
 
