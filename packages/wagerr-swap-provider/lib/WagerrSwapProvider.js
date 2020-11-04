@@ -234,7 +234,7 @@ export default class WagerrSwapProvider extends Provider {
         } else {
           const scriptSig = transaction.vin[0].scriptSig.hex
           const script = wagerr.script.decompile(Buffer.from(scriptSig, 'hex'))
-          const inputScript = wagerr.script.compile([sig, ...script.slice(1)])
+          const inputScript = wagerr.script.compile([Buffer.from(sig, 'hex'), ...script.slice(1)])
           tx.setInputScript(0, inputScript)
         }
         const hex = tx.toHex()
