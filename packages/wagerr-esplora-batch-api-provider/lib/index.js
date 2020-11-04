@@ -1,0 +1,3 @@
+import WagerrEsploraBatchApiProvider from './WagerrEsploraBatchApiProvider'
+
+export default WagerrEsploraBatchApiProvider
