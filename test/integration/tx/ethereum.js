@@ -73,6 +73,7 @@ describe('Transactions', function () {
       await deployERC20Token(chains.erc20WithJs)
     })
     testTransaction(chains.erc20WithJs)
+    testSweepTransaction(chains.erc20WithJs)
   })
 
   describeExternal('ERC20 - Ledger', () => {
@@ -81,7 +82,7 @@ describe('Transactions', function () {
       await deployERC20Token(chains.erc20WithLedger)
     })
     testTransaction(chains.erc20WithLedger)
-  })
+    })
 
   describeExternal('ERC20 - Metamask', () => {
     connectMetaMask()
