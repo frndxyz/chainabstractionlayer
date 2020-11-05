@@ -40,7 +40,7 @@ export default class WagerrEsploraBatchApiProvider extends WagerrEsploraApiProvi
     const response = await this._batchAxios.get(`/custom/getaddressesinfo/${addressesJoin}`)
 
     const transactionCountsArray = Object.keys(response.data).map((addr) => {
-      return { [addr]: response[addr].tx_counts }
+      return { [addr]: response.data[addr].tx_counts }
     })
 
     const transactionCounts = Object.assign({}, ...transactionCountsArray)
