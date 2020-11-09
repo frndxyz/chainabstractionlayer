@@ -44,7 +44,7 @@ export default superclass => class WagerrWalletProvider extends superclass {
     return normalizeTransactionObject(decodeRawTransaction(hex, this._network), fee)
   }
 
-  async sendTransaction (to, value, data, feePerByte) {
+  async sendTransaction (to, value, feePerByte) {
     return this._sendTransaction([{ to, value }], feePerByte)
   }
 

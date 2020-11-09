@@ -181,8 +181,8 @@ export default class Chain {
    * @param {!string} [fee] - Fee price in native unit (e.g. sat/b, wei)
    * @return {Promise<Transaction>} Resolves with a signed transaction.
    */
-  async sendTransaction (to, value, data, fee) {
-    const transaction = await this.client.getMethod('sendTransaction')(to, value, data, fee)
+  async sendTransaction (to, value, fee) {
+    const transaction = await this.client.getMethod('sendTransaction')(to, value, fee)
     this.client.assertValidTransaction(transaction)
     return transaction
   }
