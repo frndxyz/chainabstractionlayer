@@ -24,7 +24,7 @@
     "@wagerr-wdk/utils": "^0.8.1",
     "@wagerr-wdk/wagerr-networks": "^0.8.1",
     "@wagerr-wdk/wagerr-utils": "^0.8.1",
-    "@wagerr-wdk/wagerrjs-lib": "5.2.1",
+    "@wagerr-wdk/wagerrjs-lib": "5.2.2",
     "bignumber.js": "^8.1.1",
     "lodash": "^4.17.20"
   },
