@@ -1,6 +1,6 @@
 import { BigNumber } from 'bignumber.js'
 import bip32 from 'bip32'
-import * as wagerr from 'wagerrjs-lib'
+import * as wagerr from '@wagerr-wdk/wagerrjs-lib'
 
 import LedgerProvider from '@wagerr-wdk/ledger-provider'
 import WagerrWalletProvider from '@wagerr-wdk/wagerr-wallet-provider'
@@ -80,7 +80,7 @@ export default class WagerrLedgerProvider extends WagerrWalletProvider(LedgerPro
     const isSegwit = Boolean(witnessScript)
 
     const ledgerInputTx = await app.splitTransaction(inputTxHex, true)
-    
+
     const ledgerTx = await app.splitTransaction(psbt.__CACHE.__TX.toHex(), true)
     const ledgerOutputs = await app.serializeTransactionOutputs(ledgerTx)
 

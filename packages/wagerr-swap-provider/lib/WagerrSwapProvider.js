@@ -1,5 +1,5 @@
-import * as wagerr from 'wagerrjs-lib'
-import * as classify from 'wagerrjs-lib/src/classify'
+import * as wagerr from '@wagerr-wdk/wagerrjs-lib'
+import * as classify from '@wagerr-wdk/wagerrjs-lib/src/classify'
 import BigNumber from 'bignumber.js'
 import Provider from '@wagerr-wdk/provider'
 import {
@@ -12,7 +12,6 @@ import { addressToString } from '@wagerr-wdk/utils'
 import networks from '@wagerr-wdk/wagerr-networks'
 
 import { version } from '../package.json'
-
 
 export default class WagerrSwapProvider extends Provider {
   constructor (network = networks.wagerr, mode = 'p2wsh') {
@@ -175,7 +174,7 @@ export default class WagerrSwapProvider extends Provider {
       input.nonWitnessUtxo = Buffer.from(initiationTxRaw, 'hex')
       input.redeemScript = paymentVariant.redeem.output
     }
-    
+
     const output = {
       address: addressToString(address),
       value: swapVout.vSat - txfee
@@ -228,7 +227,7 @@ export default class WagerrSwapProvider extends Provider {
 
   extractSwapParams (outputScript) {
     const buffer = wagerr.script.decompile(Buffer.from(outputScript, 'hex'))
-    if (buffer.length !==20) throw new Error('Invalid swap output script')
+    if (buffer.length !== 20) throw new Error('Invalid swap output script')
     const secretHash = buffer[5].reverse().toString('hex')
     const recipientPublicKey = buffer[9].reverse().toString('hex')
     const expiration = parseInt(buffer[11].reverse().toString('hex'), 16)
