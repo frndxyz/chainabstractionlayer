@@ -184,12 +184,8 @@ export default class WagerrSwapProvider extends Provider {
     psbt.addInput(input)
     psbt.addOutput(output)
 
-    const signedPSBTHex = await this.getMethod('signPSBT')(
-      psbt.toHex(),
-      address
-    )
-
-    const signedPSBT = wagerr.Psbt.fromHex(signedPSBTHex, { network })
+    const signedPSBTHex = await this.getMethod('signPSBT')(psbt.toBase64(), 0, address)
+    const signedPSBT = wagerr.Psbt.fromBase64(signedPSBTHex, { network })
 
     const sig = signedPSBT.data.inputs[0].partialSig[0].signature
 

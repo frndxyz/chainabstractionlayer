@@ -31,13 +31,13 @@ export default class WagerrNodeWalletProvider extends WalletProvider { // TODO: 
     return this._rpc.jsonrpc('signmessage', from, message).then(result => Buffer.from(result, 'base64').toString('hex'))
   }
 
-  async signPSBT (psbtHex, address) {
-    const psbt = wagerr.Psbt.fromHex(psbtHex, { network: this._network })
+  async signPSBT (data, input, address) {
+    const psbt = wagerr.Psbt.fromBase64(data, { network: this._network })
     const wif = await this.dumpPrivKey(address)
     const keyPair = wagerr.ECPair.fromWIF(wif, this._network)
 
-    psbt.signInput(0, keyPair) // TODO: SIGN ALL OUTPUTS
-    return psbt.toHex()
+    psbt.signInput(input, keyPair)
+    return psbt.toBase64()
   }
 
   // inputs consists of [{ inputTxHex, index, vout, outputScript }]
