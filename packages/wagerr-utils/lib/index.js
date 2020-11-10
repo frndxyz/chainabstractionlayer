@@ -156,8 +156,8 @@ function normalizeTransactionObject (tx, fee, block) {
 }
 
 // TODO: This is copy pasta because it's not exported from wagerrjs-lib
- // https://github.com/wagerr/wagerrjs-lib/blob/master/test/integration/csv.spec.ts#L477
- function witnessStackToScriptWitness (witness) {
+// https://github.com/wagerr/wagerrjs-lib/blob/master/test/integration/csv.spec.ts#L477
+function witnessStackToScriptWitness (witness) {
   let buffer = Buffer.allocUnsafe(0)
 
   function writeSlice (slice) {

@@ -126,9 +126,9 @@ function testSignPSBT (chain) {
     }
 
     const output = {
-       address: addressToString(unusedAddressTwo),
-       value: value - txfee
-     }
+      address: addressToString(unusedAddressTwo),
+      value: value - txfee
+    }
 
     psbt.addInput(input)
     psbt.addOutput(output)
@@ -297,7 +297,7 @@ describe('Transactions', function () {
   describe('Wagerr - Node', () => {
     testTransaction(chains.wagerrWithNode)
     testBatchTransaction(chains.wagerrWithNode)
-    estSignPSBT(chains.wagerrWithNode)
+    testSignPSBT(chains.wagerrWithNode)
     testSignBatchP2SHTransaction(chains.wagerrWithNode)
     testSignBatchP2SHTransaction(chains.wagerrWithNode)
   })
