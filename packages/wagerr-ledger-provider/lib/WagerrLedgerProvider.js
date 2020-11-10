@@ -1,6 +1,6 @@
 import { BigNumber } from 'bignumber.js'
 import bip32 from 'bip32'
-import * as wagerr from '@wagerr-wdk/wagerrjs-lib'
+import * as wagerr from 'wagerrjs-lib'
 
 import LedgerProvider from '@wagerr-wdk/ledger-provider'
 import WagerrWalletProvider from '@wagerr-wdk/wagerr-wallet-provider'
@@ -20,7 +20,7 @@ import { version } from '../package.json'
 
 export default class WagerrLedgerProvider extends WagerrWalletProvider(LedgerProvider) {
   constructor (network = networks.wagerr, addressType = 'bech32') {
-    super(network, addressType, [HwAppBitcoin, network, 'WGR']) // #TODO wagerr
+    super(network, addressType, [HwAppBitcoin, network, 'WGR'])
     this._walletPublicKeyCache = {}
   }
 
@@ -61,38 +61,52 @@ export default class WagerrLedgerProvider extends WagerrWalletProvider(LedgerPro
       serializedOutputs,
       undefined,
       undefined,
-      ['bech32', 'p2sh-segwit'].includes(this._addressType), // TODO: for wagerr if required
+      ['bech32', 'p2sh-segwit'].includes(this._addressType),
       undefined,
       this._addressType === 'bech32' ? ['bech32'] : undefined
     ),
     fee }
   }
 
-  async signP2SHTransaction (inputTxHex, txHex, address, vout, outputScript, lockTime = 0, segwit = false) {
+  async signPSBT (psbtHex, address) {
+  // async signP2SHTransaction (inputTxHex, txHex, address, vout, outputScript, lockTime = 0, segwit = false) {
+    const psbt = wagerr.Psbt.fromHex(psbtHex, { network: this._network })
     const app = await this.getApp()
     const walletAddress = await this.getWalletAddress(address)
+    const input = psbt.data.inputs[0]
 
-    const tx = wagerr.Transaction.fromHex(txHex)
-
-    if (!segwit) {
-      tx.setInputScript(vout, Buffer.from(outputScript, 'hex')) // TODO: is this ok for p2sh-segwit??
-    }
+    const inputTxHex = await this.getMethod('getRawTransactionByHash')(psbt.txInputs[0].hash.reverse().toString('hex'))
+    const outputScript = input.witnessScript || input.redeemScript
+    const isSegwit = Boolean(input.witnessScript)
 
     const ledgerInputTx = await app.splitTransaction(inputTxHex, true)
-    const ledgerTx = await app.splitTransaction(tx.toHex(), true)
-    const ledgerOutputs = (await app.serializeTransactionOutputs(ledgerTx)).toString('hex')
-    const ledgerSig = await app.signP2SHTransaction(
-      [[ledgerInputTx, vout, outputScript, 0]],
-      [walletAddress.derivationPath],
-      ledgerOutputs.toString('hex'),
-      lockTime,
-      undefined, // SIGHASH_ALL
-      segwit,
-      2
-    )
+    
+    const ledgerTx = await app.splitTransaction(psbt.__CACHE.__TX.toHex(), true)
+    const ledgerOutputs = await app.serializeTransactionOutputs(ledgerTx)
 
-    const finalSig = segwit ? ledgerSig[0] : ledgerSig[0] + '01' // Is this a ledger bug? Why non segwit signs need the sighash appended?
-    return finalSig
+    // path param for multiple inpu
+    const signer = {
+      network: this._network,
+      publicKey: walletAddress.publicKey,
+      sign: async () => {
+        const ledgerSig = await app.signP2SHTransaction(
+          [[ledgerInputTx, psbt.txInputs[0].index, outputScript.toString('hex'), 0]],
+          [walletAddress.derivationPath],
+          ledgerOutputs.toString('hex'),
+          psbt.locktime,
+          undefined, // SIGHASH_ALL
+          isSegwit,
+          2
+        )
+        const finalSig = isSegwit ? ledgerSig[0] : ledgerSig[0] + '01' // Is this a ledger bug? Why non segwit signs need the sighash appended?
+        const { signature } = wagerr.script.signature.decode(Buffer.from(finalSig, 'hex'));
+        return signature;
+      }
+    };
+
+    await psbt.signInputAsync(0, signer)
+
+    return psbt.toHex()
   }
 
   // inputs consists of [{ inputTxHex, index, vout, outputScript }]
