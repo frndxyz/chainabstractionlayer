@@ -69,7 +69,6 @@ export default class WagerrLedgerProvider extends WagerrWalletProvider(LedgerPro
   }
 
   async signPSBT (psbtHex, address) {
-  // async signP2SHTransaction (inputTxHex, txHex, address, vout, outputScript, lockTime = 0, segwit = false) {
     const psbt = wagerr.Psbt.fromHex(psbtHex, { network: this._network })
     const app = await this.getApp()
     const walletAddress = await this.getWalletAddress(address)
@@ -84,7 +83,6 @@ export default class WagerrLedgerProvider extends WagerrWalletProvider(LedgerPro
     const ledgerTx = await app.splitTransaction(psbt.__CACHE.__TX.toHex(), true)
     const ledgerOutputs = await app.serializeTransactionOutputs(ledgerTx)
 
-    // path param for multiple inpu
     const signer = {
       network: this._network,
       publicKey: walletAddress.publicKey,
@@ -99,10 +97,10 @@ export default class WagerrLedgerProvider extends WagerrWalletProvider(LedgerPro
           2
         )
         const finalSig = isSegwit ? ledgerSig[0] : ledgerSig[0] + '01' // Is this a ledger bug? Why non segwit signs need the sighash appended?
-        const { signature } = wagerr.script.signature.decode(Buffer.from(finalSig, 'hex'));
-        return signature;
+        const { signature } = wagerr.script.signature.decode(Buffer.from(finalSig, 'hex'))
+        return signature
       }
-    };
+    }
 
     await psbt.signInputAsync(0, signer)
 

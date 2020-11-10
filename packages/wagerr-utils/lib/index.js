@@ -3,6 +3,7 @@ import BigNumber from 'bignumber.js'
 import { base58, padHexStart } from '@wagerr-wdk/crypto'
 import * as wagerr from '@wagerr-wdk/wagerrjs-lib'
 import * as classify from '@wagerr-wdk/wagerrjs-lib/src/classify'
+import * as varuint from 'bip174/src/lib/converter/varint'
 import networks from '@wagerr-wdk/wagerr-networks'
 import coinselect from 'coinselect'
 import coinselectAccumulative from 'coinselect/accumulative'
@@ -154,6 +155,38 @@ function normalizeTransactionObject (tx, fee, block) {
   return result
 }
 
+// TODO: This is copy pasta because it's not exported from wagerrjs-lib
+ // https://github.com/wagerr/wagerrjs-lib/blob/master/test/integration/csv.spec.ts#L477
+ function witnessStackToScriptWitness (witness) {
+  let buffer = Buffer.allocUnsafe(0)
+
+  function writeSlice (slice) {
+    buffer = Buffer.concat([buffer, Buffer.from(slice)])
+  }
+
+  function writeVarInt (i) {
+    const currentLen = buffer.length
+    const varintLen = varuint.encodingLength(i)
+
+    buffer = Buffer.concat([buffer, Buffer.allocUnsafe(varintLen)])
+    varuint.encode(i, buffer, currentLen)
+  }
+
+  function writeVarSlice (slice) {
+    writeVarInt(slice.length)
+    writeSlice(slice)
+  }
+
+  function writeVector (vector) {
+    writeVarInt(vector.length)
+    vector.forEach(writeVarSlice)
+  }
+
+  writeVector(witness)
+
+  return buffer
+}
+
 const AddressTypes = [
   'legacy', 'p2sh-segwit', 'bech32'
 ]
@@ -165,6 +198,7 @@ export {
   selectCoins,
   decodeRawTransaction,
   normalizeTransactionObject,
+  witnessStackToScriptWitness,
   AddressTypes,
   version
 }

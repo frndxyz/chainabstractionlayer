@@ -31,22 +31,13 @@ export default class WagerrNodeWalletProvider extends WalletProvider { // TODO: 
     return this._rpc.jsonrpc('signmessage', from, message).then(result => Buffer.from(result, 'base64').toString('hex'))
   }
 
-  async signP2SHTransaction (inputTxHex, txHex, address, vout, outputScript, lockTime = 0, segwit = false) {
+  async signPSBT (psbtHex, address) {
+    const psbt = wagerr.Psbt.fromHex(psbtHex, { network: this._network })
     const wif = await this.dumpPrivKey(address)
-    const wallet = wagerr.ECPair.fromWIF(wif, this._network)
+    const keyPair = wagerr.ECPair.fromWIF(wif, this._network)
 
-    const inputTx = wagerr.Transaction.fromHex(inputTxHex)
-    const tx = wagerr.Transaction.fromHex(txHex)
-
-    let sigHash
-    if (segwit) {
-      sigHash = tx.hashForWitnessV0(0, Buffer.from(outputScript, 'hex'), inputTx.outs[vout].value, wagerr.Transaction.SIGHASH_ALL) // AMOUNT NEEDS TO BE PREVOUT AMOUNT
-    } else {
-      sigHash = tx.hashForSignature(0, Buffer.from(outputScript, 'hex'), wagerr.Transaction.SIGHASH_ALL)
-    }
-
-    const sig = wagerr.script.signature.encode(wallet.sign(sigHash), wagerr.Transaction.SIGHASH_ALL)
-    return sig.toString('hex')
+    psbt.signInput(0, keyPair) // TODO: SIGN ALL OUTPUTS
+    return psbt.toHex()
   }
 
   // inputs consists of [{ inputTxHex, index, vout, outputScript }]

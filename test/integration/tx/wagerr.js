@@ -67,7 +67,7 @@ function testSweepTransaction (chain) {
   })
 }
 
-function testSignP2SHTransaction (chain) {
+function testSignPSBT (chain) {
   it('should redeem one P2SH', async () => {
     const network = chain.network
     const value = config[chain.name].value
@@ -111,30 +111,38 @@ function testSignP2SHTransaction (chain) {
       if (paymentVariantEntryOne) multiOne.multiVout = vout
     }
 
-    const txb = new wagerr.TransactionBuilder(network)
+    const psbt = new wagerr.Psbt({ network })
     const txfee = WagerrUtils.calculateFee(3, 3, 9)
 
-    multiOne.multiVout.vSat = value
+    const input = {
+      hash: initiationTx.hash,
+      index: multiOne.multiVout.n,
+      sequence: 0,
+      witnessUtxo: {
+        script: paymentVariant.output,
+        value
+      },
+      witnessScript: paymentVariant.redeem.output
+    }
 
-    txb.addInput(initiationTx.hash, multiOne.multiVout.n, 0, paymentVariant.output)
-    txb.addOutput(addressToString(unusedAddressTwo), value - txfee)
+    const output = {
+       address: addressToString(unusedAddressTwo),
+       value: value - txfee
+     }
 
-    const tx = txb.buildIncomplete()
+    psbt.addInput(input)
+    psbt.addOutput(output)
 
-    const signaturesOne = await chain.client.getMethod('signP2SHTransaction')(initiationTx._raw.hex, tx.toHex(), addresses[0].address, multiOne.multiVout.n, paymentVariant.redeem.output.toString('hex'), 0, true)
+    const signedPSBTHex = await chain.client.getMethod('signPSBT')(
+       psbt.toHex(),
+       unusedAddressOne
+    )
+    const signedPSBT = wagerr.Psbt.fromHex(signedPSBTHex, { network })
+    signedPSBT.finalizeInput(0)
 
-    const multiOneInput = wagerr.script.compile([
-      Buffer.from(signaturesOne, 'hex'),
-      Buffer.from(addresses[0].publicKey, 'hex')
-    ])
+    const hex = signedPSBT.extractTransaction().toHex()
 
-    multiOne.paymentParams = { redeem: { output: multisigOutput, input: multiOneInput, network }, network }
-
-    multiOne.paymentWithInput = wagerr.payments.p2wsh(multiOne.paymentParams)
-
-    tx.setWitness(0, multiOne.paymentWithInput.witness)
-
-    const claimTxHash = await chain.client.getMethod('sendRawTransaction')(tx.toHex())
+    const claimTxHash = await chain.client.getMethod('sendRawTransaction')(hex)
 
     await mineBlock(chain)
 
@@ -285,14 +293,14 @@ describe('Transactions', function () {
     })
     testTransaction(chains.wagerrWithLedger)
     testBatchTransaction(chains.wagerrWithLedger)
-    testSignP2SHTransaction(chains.wagerrWithLedger)
+    testSignPSBT(chains.wagerrWithLedger)
     testSignBatchP2SHTransaction(chains.wagerrWithLedger)
   })
 
   describe('Wagerr - Node', () => {
     testTransaction(chains.wagerrWithNode)
     testBatchTransaction(chains.wagerrWithNode)
-    testSignP2SHTransaction(chains.wagerrWithNode)
+    estSignPSBT(chains.wagerrWithNode)
     testSignBatchP2SHTransaction(chains.wagerrWithNode)
     testSignBatchP2SHTransaction(chains.wagerrWithNode)
   })
@@ -304,7 +312,7 @@ describe('Transactions', function () {
     })
     testTransaction(chains.wagerrWithJs)
     testBatchTransaction(chains.wagerrWithJs)
-    testSignP2SHTransaction(chains.wagerrWithJs)
+    testSignPSBT(chains.wagerrWithJs)
     testSignBatchP2SHTransaction(chains.wagerrWithJs)
     testSignBatchP2SHTransaction(chains.wagerrWithJs)
     testSweepTransaction(chains.wagerrWithJs)

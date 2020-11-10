@@ -1,49 +1,18 @@
 import * as wagerr from 'wagerrjs-lib'
 import * as classify from 'wagerrjs-lib/src/classify'
-import * as varuint from 'bip174/src/lib/converter/varint';
 import BigNumber from 'bignumber.js'
 import Provider from '@wagerr-wdk/provider'
 import {
   calculateFee,
   decodeRawTransaction,
-  normalizeTransactionObject
+  normalizeTransactionObject,
+  witnessStackToScriptWitness
 } from '@wagerr-wdk/wagerr-utils'
 import { addressToString } from '@wagerr-wdk/utils'
 import networks from '@wagerr-wdk/wagerr-networks'
 
 import { version } from '../package.json'
 
-// TODO: This is copy pasta because it's not exported from wagerrjs-lib
-// https://github.com/wagerr/wagerrjs-lib/blob/master/test/integration/csv.spec.ts#L477
-function witnessStackToScriptWitness(witness) {
-  let buffer = Buffer.allocUnsafe(0);
-
-  function writeSlice(slice) {
-    buffer = Buffer.concat([buffer, Buffer.from(slice)]);
-  }
-
-  function writeVarInt(i) {
-    const currentLen = buffer.length;
-    const varintLen = varuint.encodingLength(i);
-
-    buffer = Buffer.concat([buffer, Buffer.allocUnsafe(varintLen)]);
-    varuint.encode(i, buffer, currentLen);
-  }
-
-  function writeVarSlice(slice) {
-    writeVarInt(slice.length);
-    writeSlice(slice);
-  }
-
-  function writeVector(vector) {
-    writeVarInt(vector.length);
-    vector.forEach(writeVarSlice);
-  }
-
-  writeVector(witness);
-
-  return buffer;
-}
 
 export default class WagerrSwapProvider extends Provider {
   constructor (network = networks.wagerr, mode = 'p2wsh') {
@@ -196,10 +165,10 @@ export default class WagerrSwapProvider extends Provider {
       sequence: 0
     }
 
-    if(isSegwit) {
+    if (isSegwit) {
       input.witnessUtxo = {
         script: paymentVariant.output,
-        value: swapVout.vSat 
+        value: swapVout.vSat
       }
       input.witnessScript = swapPaymentVariants.p2wsh.redeem.output // Strip the push bytes (0020) off the script
     } else {
@@ -232,8 +201,8 @@ export default class WagerrSwapProvider extends Provider {
       : wagerr.payments.p2sh(paymentParams)
 
     const getFinalScripts = () => {
-      let finalScriptSig;
-      let finalScriptWitness;
+      let finalScriptSig
+      let finalScriptWitness
 
       // create witness stack
       if (isSegwit) {
@@ -263,7 +232,7 @@ export default class WagerrSwapProvider extends Provider {
 
   extractSwapParams (outputScript) {
     const buffer = wagerr.script.decompile(Buffer.from(outputScript, 'hex'))
-    if (buffer.length != 20) throw new Error('Invalid swap output script')
+    if (buffer.length !==20) throw new Error('Invalid swap output script')
     const secretHash = buffer[5].reverse().toString('hex')
     const recipientPublicKey = buffer[9].reverse().toString('hex')
     const expiration = parseInt(buffer[11].reverse().toString('hex'), 16)
@@ -277,8 +246,8 @@ export default class WagerrSwapProvider extends Provider {
       const initiationTransaction = await this.getMethod('getTransactionByHash')(transaction._raw.vin[0].txid)
       const scriptType = initiationTransaction._raw.vout[transaction._raw.vin[0].vout].scriptPubKey.type
       if (
-        ['scripthash', 'witness_v0_scripthash'].includes(scriptType) 
-        && [4, 5].includes(inputScript.length)
+        ['scripthash', 'witness_v0_scripthash'].includes(scriptType) &&
+        [4, 5].includes(inputScript.length)
       ) return true
     }
     return false

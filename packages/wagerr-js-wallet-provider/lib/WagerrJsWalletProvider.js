@@ -55,43 +55,59 @@ export default class WagerrJsWalletProvider extends WagerrWalletProvider(WalletP
       })
     }
 
-    const txb = new wagerr.TransactionBuilder(network)
+    const psbt = new wagerr.Psbt({ network })
 
-    for (const output of outputs) {
-      const to = output.to.address === undefined ? output.to : addressToString(output.to) // Allow for OP_RETURN
-      txb.addOutput(to, output.value)
-    }
-
-    const prevOutScriptType = this.getScriptType()
+    const needsWitness = this._addressType === 'bech32' || this._addressType === 'p2sh-segwit'
 
     for (let i = 0; i < inputs.length; i++) {
       const wallet = await this.getWalletAddress(inputs[i].address)
       const keyPair = await this.keyPair(wallet.derivationPath)
       const paymentVariant = this.getPaymentVariantFromPublicKey(keyPair.publicKey)
 
-      txb.addInput(inputs[i].txid, inputs[i].vout, 0, paymentVariant.output)
-    }
-
-    for (let i = 0; i < inputs.length; i++) {
-      const wallet = await this.getWalletAddress(inputs[i].address)
-      const keyPair = await this.keyPair(wallet.derivationPath)
-      const paymentVariant = this.getPaymentVariantFromPublicKey(keyPair.publicKey)
-      const needsWitness = this._addressType === 'bech32' || this._addressType === 'p2sh-segwit'
-
-      const signParams = { prevOutScriptType, vin: i, keyPair }
+      const psbtInput = {
+        hash: inputs[i].txid,
+        index: inputs[i].vout,
+        sequence: 0
+      }
 
       if (needsWitness) {
-        signParams.witnessValue = inputs[i].value
+        psbtInput.witnessUtxo = {
+          script: paymentVariant.output,
+          value: inputs[i].value
+        }
+      } else {
+        const inputTx = await this.getMethod('getRawTransactionByHash')(inputs[i].txid, true)
+        psbtInput.nonWitnessUtxo = Buffer.from(inputTx._raw.hex, 'hex')
       }
 
       if (this._addressType === 'p2sh-segwit') {
-        signParams.redeemScript = paymentVariant.redeem.output
+        psbtInput.redeemScript = paymentVariant.redeem.output
       }
 
-      txb.sign(signParams)
+      psbt.addInput(psbtInput)
     }
 
-    return { hex: txb.build().toHex(), fee }
+    for (const output of outputs) {
+      const isScript = Buffer.isBuffer(output.to)
+      const address = !isScript ? addressToString(output.to) : undefined
+      const script = isScript ? output.to : undefined // Allow for OP_RETURN
+      psbt.addOutput({
+        value: output.value,
+        address,
+        script
+      })
+    }
+
+    for (let i = 0; i < inputs.length; i++) {
+      const wallet = await this.getWalletAddress(inputs[i].address)
+      const keyPair = await this.keyPair(wallet.derivationPath)
+      psbt.signInput(i, keyPair)
+      psbt.validateSignaturesOfInput(i)
+    }
+
+    psbt.finalizeAllInputs()
+
+    return { hex: psbt.extractTransaction().toHex(), fee }
   }
 
   async _buildSweepTransaction (externalChangeAddress, feePerByte) {
@@ -112,23 +128,13 @@ export default class WagerrJsWalletProvider extends WagerrWalletProvider(WalletP
     return this._buildTransaction(_outputs, feePerByte, inputs)
   }
 
-  async signP2SHTransaction (inputTxHex, txHex, address, vout, outputScript, lockTime = 0, segwit = false) {
+  async signPSBT (psbtHex, address) {
+    const psbt = wagerr.Psbt.fromHex(psbtHex, { network: this._network })
     const wallet = await this.getWalletAddress(address)
     const keyPair = await this.keyPair(wallet.derivationPath)
 
-    const inputTx = wagerr.Transaction.fromHex(inputTxHex)
-    const tx = wagerr.Transaction.fromHex(txHex)
-
-    let sigHash
-
-    if (segwit) {
-      sigHash = tx.hashForWitnessV0(0, Buffer.from(outputScript, 'hex'), inputTx.outs[vout].value, wagerr.Transaction.SIGHASH_ALL) // AMOUNT NEEDS TO BE PREVOUT AMOUNT
-    } else {
-      sigHash = tx.hashForSignature(0, Buffer.from(outputScript, 'hex'), wagerr.Transaction.SIGHASH_ALL)
-    }
-
-    const sig = wagerr.script.signature.encode(keyPair.sign(sigHash), wagerr.Transaction.SIGHASH_ALL)
-    return sig.toString('hex')
+    psbt.signInput(0, keyPair) // TODO: SIGN ALL OUTPUTS
+    return psbt.toHex()
   }
 
   // inputs consists of [{ inputTxHex, index, vout, outputScript }]
