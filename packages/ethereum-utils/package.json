@@ -1,7 +1,7 @@
 {
   "name": "@wagerr-wdk/ethereum-utils",
   "umdName": "EthereumUtils",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "",
   "module": "lib/index.js",
   "main": "dist/index.cjs.js",
@@ -18,9 +18,9 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.4.3",
-    "@wagerr-wdk/crypto": "^0.8.0",
-    "@wagerr-wdk/schema": "^0.8.0",
-    "@wagerr-wdk/utils": "^0.8.0",
+    "@wagerr-wdk/crypto": "^0.8.1",
+    "@wagerr-wdk/schema": "^0.8.1",
+    "@wagerr-wdk/utils": "^0.8.1",
     "eip55": "^1.0.3",
     "lodash": "^4.17.20"
   },

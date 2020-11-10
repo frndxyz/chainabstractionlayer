@@ -2,7 +2,7 @@
   "name": "@wagerr-wdk/wagerr-esplora-api-provider",
   "umdName": "WagerrEsploraApiProvider",
   "umdExport": "default",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "",
   "module": "lib/index.js",
   "main": "dist/index.cjs.js",
@@ -19,9 +19,9 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.11.2",
-    "@wagerr-wdk/provider": "^0.8.0",
-    "@wagerr-wdk/utils": "^0.8.0",
-    "@wagerr-wdk/wagerr-utils": "^0.8.0",
+    "@wagerr-wdk/provider": "^0.8.1",
+    "@wagerr-wdk/utils": "^0.8.1",
+    "@wagerr-wdk/wagerr-utils": "^0.8.1",
     "axios": "^0.19.2",
     "bignumber.js": "^8.1.1",
     "lodash": "^4.17.20"
