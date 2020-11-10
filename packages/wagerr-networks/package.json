@@ -19,7 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.4.3",
-    "@wagerr-wdk/wagerrjs-lib": "5.1.11",
+    "@wagerr-wdk/wagerrjs-lib": "5.2.1",
     "lodash": "^4.17.20"
   },
   "engines": {
