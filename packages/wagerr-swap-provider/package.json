@@ -2,7 +2,7 @@
   "name": "@wagerr-wdk/wagerr-swap-provider",
   "umdName": "WagerrSwapProvider",
   "umdExport": "default",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "",
   "module": "lib/index.js",
   "main": "dist/index.cjs.js",
@@ -24,7 +24,7 @@
     "@wagerr-wdk/utils": "^0.8.1",
     "@wagerr-wdk/wagerr-networks": "^0.8.1",
     "@wagerr-wdk/wagerr-utils": "^0.8.1",
-    "@wagerr-wdk/wagerrjs-lib": "5.2.2",
+    "@wagerr-wdk/wagerrjs-lib": "5.2.3",
     "bignumber.js": "^8.1.1",
     "lodash": "^4.17.20"
   },

@@ -2,7 +2,7 @@
   "name": "@wagerr-wdk/ethereum-ledger-provider",
   "umdName": "EthereumLedgerProvider",
   "umdExport": "default",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "",
   "module": "lib/index.js",
   "main": "dist/index.cjs.js",
